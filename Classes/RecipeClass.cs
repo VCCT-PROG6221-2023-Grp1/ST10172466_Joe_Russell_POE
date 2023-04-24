@@ -27,9 +27,7 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         public void GetRecipeInput()
-        {
-            this.IngredientClassHere.IngredientInput();
-
+        {          
             Console.WriteLine("Enter Recipe Name:");
             RecipeName = Console.ReadLine();
             Console.WriteLine("Enter Number of Ingredients:");
@@ -39,25 +37,27 @@ namespace PROG6221_POE_Part_1.Classes
             for (int i = 0; i < this.NumberOfIngredients; i++)
             {
                 var ingredients = new IngredientClass();
-                //IngredientClassHere.GetIngredientDetails();            
+                IngredientClassHere.IngredientInput();            
                 ingredients.IngredientName = this.IngredientClassHere.IngredientName;
-                //ingredients.IngredientName = this.IngredientClassHere.IngredientName;
-                //ingredients.IngredientName = this.IngredientClassHere.IngredientName;
+                ingredients.IngredientName = this.IngredientClassHere.IngredientName;
+                ingredients.IngredientName = this.IngredientClassHere.IngredientName;
                 IngredientArray[i] = ingredients;
             }
-            Console.WriteLine(IngredientArray[0].IngredientName);
+            Console.WriteLine(IngredientArray[0].IngredientName);            
             Console.ReadLine();
 
         }
 
         public int IntErrorHandling(string input)
         {
+            int ingNum = 0;
+
             try
             {
-
+                ingNum = int.Parse(input);
             }
             catch (Exception ex) { }
-            return 0;
+            return ingNum;
         }
 
 

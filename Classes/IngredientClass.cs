@@ -9,21 +9,31 @@ namespace PROG6221_POE_Part_1.Classes
 {
     internal class IngredientClass
     {
-        public string IngredientName { get; set; } = String.Empty;
+        public string IngredientName { get; set; } = string.Empty;
 
+        public string IngredientQuantity { get; set; } = string.Empty;
+
+        public string MeasurementUnit { get; set; } = string.Empty;
+//-----------------------------------------------------------------------------------------------//
+/// <summary>
+/// Default constructor
+/// </summary>
         public IngredientClass() 
         { 
         
         }
 
+//-----------------------------------------------------------------------------------------------//
         public void IngredientInput()
         {
-            this.IngredientName = "Egg";
-        }
+            Console.WriteLine("Please enter the name of the ingredient: ");
+            this.IngredientName = Console.ReadLine();
 
-        public void GetIngredientName()
-        {
+            Console.WriteLine("Please enter the quantity of the ingredient: ");
+            this.IngredientQuantity = Console.ReadLine();
 
+            Console.WriteLine("Please enter the measurement unit of the ingredient: ");
+            this.MeasurementUnit = Console.ReadLine();
         }
 
 
