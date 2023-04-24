@@ -18,7 +18,10 @@ namespace PROG6221_POE_Part_1.Classes
         
         public void RunWorker()
         {
-            recipe.GetRecipeInput();
+            recipe.RunRecipe();
+           //recipe.GetRecipeInput();
+            //recipe.DisplayRecipe();
+           // recipe.GetRecipeStepInput();
 
         }
     }

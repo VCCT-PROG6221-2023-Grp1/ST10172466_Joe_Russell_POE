@@ -11,31 +11,98 @@ namespace PROG6221_POE_Part_1.Classes
     {
         public string IngredientName { get; set; } = string.Empty;
 
-        public string IngredientQuantity { get; set; } = string.Empty;
+        public double IngredientQuantity { get; set; } = 0;
 
         public string MeasurementUnit { get; set; } = string.Empty;
-//-----------------------------------------------------------------------------------------------//
-/// <summary>
-/// Default constructor
-/// </summary>
-        public IngredientClass() 
-        { 
-        
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public IngredientClass()
+        {
+
         }
 
-//-----------------------------------------------------------------------------------------------//
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to assign values to variables
+        /// </summary>
         public void IngredientInput()
         {
-            Console.WriteLine("Please enter the name of the ingredient: ");
-            this.IngredientName = Console.ReadLine();
 
-            Console.WriteLine("Please enter the quantity of the ingredient: ");
-            this.IngredientQuantity = Console.ReadLine();
+            this.IngredientName = this.IngredientNameInput();
 
-            Console.WriteLine("Please enter the measurement unit of the ingredient: ");
-            this.MeasurementUnit = Console.ReadLine();
+            Console.WriteLine("\r\nPlease enter the Quantity of the Ingredient: ");
+            this.IngredientQuantity = double.Parse(Console.ReadLine());
+
+            this.MeasurementUnit = this.MeasurementUnitInput();
         }
 
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to input Ingredient Name with error checking
+        /// </summary>
+        /// <returns></returns>
+        public string IngredientNameInput()
+        {
+            Console.WriteLine("\r\nPlease enter the Name of the Ingredient: ");
+            string input = Console.ReadLine();
+            string result = "";
+
+            try
+            {
+                foreach (char c in input)
+                {
+                    if (char.IsLetter(c))
+                    {
+                        result += c;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Input can only contain letters.");
+                        this.IngredientNameInput();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return result;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to input Measurement Unit with error checking
+        /// </summary>
+        /// <returns></returns>
+        public string MeasurementUnitInput()
+        {
+            Console.WriteLine("\r\nPlease enter the Measurement Unit of the Ingredient: ");
+            string input = Console.ReadLine();
+            string result = "";
+
+            try
+            {
+                foreach (char c in input)
+                {
+                    if (char.IsLetter(c))
+                    {
+                        result += c;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Input can only contain letters.");
+                        this.MeasurementUnitInput();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return result;
+        }
 
 
     }
