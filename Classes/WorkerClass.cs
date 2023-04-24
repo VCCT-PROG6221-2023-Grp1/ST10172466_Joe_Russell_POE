@@ -18,8 +18,6 @@ namespace PROG6221_POE_Part_1.Classes
         
         public void RunWorker()
         {
-            Console.WriteLine("Plesa");
-            Console.ReadLine();
             recipe.GetRecipeInput();
 
         }

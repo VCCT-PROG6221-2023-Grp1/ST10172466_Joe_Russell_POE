@@ -43,9 +43,8 @@ namespace PROG6221_POE_Part_1.Classes
                 ingredients.IngredientName = this.IngredientClassHere.IngredientName;
                 IngredientArray[i] = ingredients;
             }
-            Console.WriteLine(IngredientArray[0].IngredientName);            
+            //Console.WriteLine(IngredientArray[0].IngredientName);            
             Console.ReadLine();
-
         }
 
         public int IntErrorHandling(string input)
@@ -54,9 +53,25 @@ namespace PROG6221_POE_Part_1.Classes
 
             try
             {
-                ingNum = int.Parse(input);
+                bool isOnlyDigits = !string.IsNullOrEmpty(input) && input.All(Char.IsDigit);
+
+                if (isOnlyDigits)
+                {                    
+                    ingNum = int.Parse(input);
+                }
+                else
+                {
+                    Console.WriteLine("Please only enter digits\r\n" +
+                                      "Please re-enter input");
+                    IntErrorHandling(Console.ReadLine());
+                }
+                
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
             return ingNum;
         }
 
