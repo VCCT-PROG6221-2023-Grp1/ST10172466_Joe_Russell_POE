@@ -8,16 +8,29 @@ namespace PROG6221_POE_Part_1.Classes
 {
     internal class RecipeClass
     {
+        /// <summary>
+        /// Ingredient Class Array
+        /// </summary>
         IngredientClass[] IngredientArray;
 
+        /// <summary>
+        /// Step Class Array
+        /// </summary>
         StepClass[] StepArray;
 
+        /// <summary>
+        /// Local Ingredient Class Object
+        /// </summary>
+        public IngredientClass IngredientClassObjectHere = new IngredientClass();
 
-        public IngredientClass IngredientClassHere = new IngredientClass();
+        /// <summary>
+        /// Local Step Class Object
+        /// </summary>
+        public StepClass StepClassObjectHere = new StepClass();
 
-        public StepClass StepClassHere = new StepClass();
-
-
+        /// <summary>
+        /// String that holds the Recipe Name
+        /// </summary>
         public string RecipeName { get; set; } = string.Empty;
 
         public string name { get; set; } = string.Empty;
@@ -36,16 +49,27 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to run Recipe Class
+        /// </summary>
         public void RunRecipe()
         {
             this.Format();
-            Console.WriteLine("Enter 1 to enter Recipe Details" +
+
+            int option = GetIntegerInputFromUser("Enter 1 to enter Recipe Details" +
                 "\nEnter 2 to Scale Recipe Quantity Values" +
                 "\nEnter 3 to Reset Quantity Values" +
                 "\nEnter 4 to View Recipe" +
-                "\nEnter 5 to Exit");
+                "\nEnter 5 to Clear All Values" +
+                "\nEnter 6 to Exit");
 
-            int option = int.Parse(Console.ReadLine());
+            if (this.RecipeName.Equals("") && option > 1 && option < 6)
+            {
+                Console.WriteLine("No Recipe Entered");
+                Console.ReadLine();
+                Console.Clear();                 
+                RunRecipe();
+            }
 
             switch (option)
             {
@@ -63,10 +87,14 @@ namespace PROG6221_POE_Part_1.Classes
                     this.DisplayRecipe();
                     break;
                 case 5:
+                    this.ResetRecipe();
+                    break;
+                case 6:
                     Environment.Exit(0);
                     break;
                 default:
                     Console.WriteLine("Invalid option selected.");
+                    Console.ReadLine();
                     break;
             }
             Console.Clear();
@@ -74,27 +102,32 @@ namespace PROG6221_POE_Part_1.Classes
 
         }
 
-
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to get the Ingredient Inputs
         /// </summary>
         public void GetRecipeInput()
         {
-            Console.WriteLine("\r\nEnter Recipe Name:");
-            RecipeName = Console.ReadLine();
-            Console.WriteLine("\r\nEnter Number of Ingredients:");
-            NumberOfIngredients = IntErrorHandling(Console.ReadLine());
-            IngredientArray = new IngredientClass[NumberOfIngredients];
-
-            for (int i = 0; i < this.NumberOfIngredients; i++)
+            try
             {
-                var ingredients = new IngredientClass();
-                IngredientClassHere.IngredientInput();
-                ingredients.IngredientName = this.IngredientClassHere.IngredientName;
-                ingredients.IngredientQuantity = this.IngredientClassHere.IngredientQuantity;
-                ingredients.MeasurementUnit = this.IngredientClassHere.MeasurementUnit;
-                IngredientArray[i] = ingredients;
+                RecipeName = GetStringInputFromUser("\r\nEnter Recipe Name:");
+                NumberOfIngredients = GetIntegerInputFromUser("\r\nEnter Number of Ingredients:");
+
+                IngredientArray = new IngredientClass[NumberOfIngredients];
+
+                for (int i = 0; i < this.NumberOfIngredients; i++)
+                {
+                    var ingredients = new IngredientClass();
+                    IngredientClassObjectHere.IngredientInput();
+                    ingredients.IngredientName = this.IngredientClassObjectHere.IngredientName;
+                    ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
+                    ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
+                    IngredientArray[i] = ingredients;
+                }
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -104,23 +137,23 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void GetRecipeStepInput()
         {
-            Console.WriteLine("Enter Number of Steps: ");
-            this.NumberOfSteps = int.Parse(Console.ReadLine());
-
-            /*
-            Implement with error handling
-
-            this.NumberOfSteps = int.Parse(StepNumInput());
-             */
-
-            StepArray = new StepClass[this.NumberOfSteps];
-
-            for (int i = 0; i < this.NumberOfSteps; i++)
+            try
             {
-                var steps = new StepClass();
-                StepClassHere.StepInput();
-                steps.StepDescription = this.StepClassHere.StepDescription;
-                StepArray[i] = steps;
+                this.NumberOfSteps = GetIntegerInputFromUser("\r\nEnter Number of Steps: ");
+
+                StepArray = new StepClass[this.NumberOfSteps];
+
+                for (int i = 0; i < this.NumberOfSteps; i++)
+                {
+                    var steps = new StepClass();
+                    StepClassObjectHere.StepInput();
+                    steps.StepDescription = this.StepClassObjectHere.StepDescription;
+                    StepArray[i] = steps;
+                }
+            }
+            catch (System.Exception ex) 
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -131,21 +164,23 @@ namespace PROG6221_POE_Part_1.Classes
         public void DisplayRecipe()
         {
             string ingDisplay = "";
-            Console.WriteLine("This recipe requires:");
+            Console.WriteLine("\r\nThe " + this.RecipeName + " Recipe Requires:" +
+                "\r\n___________________________________________________________________________________________________________________");
+
             for (int i = 0; i < this.NumberOfIngredients; i++)
             {
-                ingDisplay += "- " + IngredientArray[i].IngredientQuantity.ToString() + 
-                    " " + IngredientArray[i].MeasurementUnit + 
+                ingDisplay += "- " + IngredientArray[i].IngredientQuantity.ToString() +
+                    " " + IngredientArray[i].MeasurementUnit +
                     " of " + IngredientArray[i].IngredientName + "\r\n";
-
             }
             Console.WriteLine(ingDisplay);
 
             string stepDisplay = "";
-            Console.WriteLine("\r\nFollow these steps:");
+            Console.WriteLine("\r\nFollow these steps:" +
+                "\r\n___________________________________________________________________________________________________________________");
             for (int i = 0; i < this.NumberOfSteps; i++)
             {
-                stepDisplay += "Step " + (i+1) + ": \r\n" +
+                stepDisplay += "Step " + (i + 1) + ": \r\n" +
                     StepArray[i].StepDescription + "\r\n\r\n";
             }
             Console.WriteLine(stepDisplay);
@@ -155,10 +190,12 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to scale the Quantities
+        /// </summary>
         public void ScaleRecipe()
         {
-            Console.WriteLine("\r\nEnter 1 for half, 2 for double or 3 for triple");
-            int option = int.Parse(Console.ReadLine());
+            int option = GetIntegerInputFromUser("\r\nEnter 1 for half, 2 for double or 3 for triple");
 
             switch (option)
             {
@@ -212,43 +249,12 @@ namespace PROG6221_POE_Part_1.Classes
             return ingNum;
         }
 
-        /*public string StepNumInput()
-        {
-            Console.WriteLine("Please enter the number of steps: ");
-            string input = Console.ReadLine();
-            string result = "";
-
-            bool containsOnlyDigits = true;
-
-            try
-            {
-                foreach (char c in input)
-                {
-                    if (!char.IsDigit(c))
-                    {
-                        containsOnlyDigits = false;
-                        break;
-                    }
-                }
-
-                if (containsOnlyDigits)
-                {
-                    Console.WriteLine("The input string contains only digits.");
-                    result = input;
-                }
-                else
-                {
-                    Console.WriteLine("The input string contains non-digit characters.");
-                    this.StepNumInput();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            return result;
-        }*/
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to Reset Quantity Values
+        /// </summary>
+        /// <param name="recipeIn"></param>
+        /// <returns></returns>
         public RecipeClass CopyObject(RecipeClass recipeIn)
         {
             var newRecipe = new RecipeClass();
@@ -259,6 +265,74 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to Reset Recipe
+        /// </summary>
+        public void ResetRecipe()
+        {
+            this.NumberOfIngredients = 0;
+            this.NumberOfSteps = 0;
+            this.RecipeName = "";
+
+            int[] numbers = new int[] { 1, 2, 3, 4, 5 };
+
+            // reset the array by creating a new instance of it
+            int[] newNumbers = new int[5];
+            numbers = newNumbers;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        public string GetStringInputFromUser(string inputString)
+        {
+            string input;
+            bool isValidInput = false;
+
+            do
+            {
+                Console.WriteLine(inputString);
+                input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input) || !input.All(char.IsLetter))
+                {
+                    Console.WriteLine("Invalid input. Please enter only letters.");
+                }
+                else
+                {
+                    isValidInput = true;
+                }
+            } while (!isValidInput);
+
+            return input;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        public int GetIntegerInputFromUser(string inputString)
+        {
+            int number;
+            bool isValidInput = false;
+
+            do
+            {
+                Console.WriteLine(inputString);
+                string input = Console.ReadLine();
+
+                if (!int.TryParse(input, out number))
+                {
+                    Console.WriteLine("Invalid input. Please enter a number.");
+                }
+                else
+                {
+                    isValidInput = true;
+                }
+            } while (!isValidInput);
+
+            return number;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to Format Console
+        /// </summary>
         public void Format()
         {
 

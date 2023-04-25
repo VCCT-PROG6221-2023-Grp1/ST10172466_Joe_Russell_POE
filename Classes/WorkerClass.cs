@@ -8,21 +8,23 @@ namespace PROG6221_POE_Part_1.Classes
 {
     internal class WorkerClass
     {
+        /// <summary>
+        /// Local Recipe Class Object
+        /// </summary>
+        public RecipeClass RecipeClassObjectHere = new RecipeClass();
 
-        public RecipeClass recipe = new RecipeClass();
-
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public WorkerClass()
         {
 
         }
-        
+
         public void RunWorker()
         {
-            recipe.RunRecipe();
-           //recipe.GetRecipeInput();
-            //recipe.DisplayRecipe();
-           // recipe.GetRecipeStepInput();
-
+            RecipeClassObjectHere.RunRecipe();
         }
     }
 }

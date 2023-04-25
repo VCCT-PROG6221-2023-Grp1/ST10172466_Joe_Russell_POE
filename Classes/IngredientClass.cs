@@ -29,11 +29,10 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void IngredientInput()
         {
-
             this.IngredientName = this.IngredientNameInput();
 
             Console.WriteLine("\r\nPlease enter the Quantity of the Ingredient: ");
-            this.IngredientQuantity = double.Parse(Console.ReadLine());
+            this.IngredientQuantity = IngredientQuantityInput(Console.ReadLine());
 
             this.MeasurementUnit = this.MeasurementUnitInput();
         }
@@ -73,6 +72,35 @@ namespace PROG6221_POE_Part_1.Classes
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
+        /// Method to input Ingredient Quantity with error checking
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public double IngredientQuantityInput(string input)
+        {
+            double ingNum = 0;
+            try
+            {
+                bool isOnlyDigits = !string.IsNullOrEmpty(input) && input.All(char.IsDigit);
+
+                if (isOnlyDigits)
+                {
+                    ingNum = int.Parse(input);
+                }
+                else
+                {
+                    Console.WriteLine("Please only enter digits\r\n");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return ingNum;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
         /// Method to input Measurement Unit with error checking
         /// </summary>
         /// <returns></returns>
@@ -103,8 +131,6 @@ namespace PROG6221_POE_Part_1.Classes
             }
             return result;
         }
-
-
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//

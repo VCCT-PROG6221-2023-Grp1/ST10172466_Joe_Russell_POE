@@ -8,8 +8,15 @@ namespace PROG6221_POE_Part_1.Classes
 {
     internal class StepClass
     {
+        /// <summary>
+        /// String that holds the Step Description
+        /// </summary>
         public string StepDescription { get; set; } = string.Empty;
 
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public StepClass()
         { }
 
@@ -19,7 +26,6 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void StepInput()
         {
-
             this.StepDescription = this.StepDescriptionInput();
         }
 
@@ -30,7 +36,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public string StepDescriptionInput()
         {
-            Console.WriteLine("Please enter the step description: ");
+            Console.WriteLine("\r\nPlease enter the step description: ");
             string input = Console.ReadLine();
             string result = "";
 
@@ -52,6 +58,7 @@ namespace PROG6221_POE_Part_1.Classes
             }
             return result;
         }
+        //-----------------------------------------------------------------------------------------------//
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//
