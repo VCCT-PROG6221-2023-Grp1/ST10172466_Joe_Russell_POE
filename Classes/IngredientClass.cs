@@ -29,7 +29,9 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void IngredientInput()
         {
-            this.IngredientName = this.IngredientNameInput();
+            Console.WriteLine("-----------------------------------------------------------------");
+            //this.IngredientName = this.IngredientNameInput();
+            this.IngredientName = this.GetValidString();
 
             Console.WriteLine("\r\nPlease enter the Quantity of the Ingredient: ");
             this.IngredientQuantity = IngredientQuantityInput(Console.ReadLine());
@@ -37,6 +39,32 @@ namespace PROG6221_POE_Part_1.Classes
             this.MeasurementUnit = this.MeasurementUnitInput();
         }
 
+        public string GetValidString()
+        {
+            string input;
+            bool isValid = false;
+
+            do
+            {
+                Console.WriteLine("Please enter the Name of the Ingredient: ");
+                input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Invalid input. Please enter a non-null string.");
+                }
+                else if (!input.All(c => char.IsLetter(c) || c == ' '))
+                {
+                    Console.WriteLine("Invalid input. Please enter a string containing only letters and spaces.");
+                }
+                else
+                {
+                    isValid = true;
+                }
+            } while (!isValid);
+
+            return input;
+        }
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to input Ingredient Name with error checking
@@ -44,7 +72,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public string IngredientNameInput()
         {
-            Console.WriteLine("\r\nPlease enter the Name of the Ingredient: ");
+            Console.WriteLine("Please enter the Name of the Ingredient: ");
             string input = Console.ReadLine();
             string result = "";
 
