@@ -48,7 +48,14 @@ namespace PROG6221_POE_Part_1.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Input cannot be empty");
+                    // Set the console foreground color to red
+                    Console.ForegroundColor = ConsoleColor.Red;
+
+                    Console.WriteLine("\r\nInput cannot be empty");
+
+                    // Reset the console foreground color
+                    Console.ResetColor();
+                    Console.ReadLine();
                     this.StepDescriptionInput();
                 }
             }

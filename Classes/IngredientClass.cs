@@ -14,6 +14,7 @@ namespace PROG6221_POE_Part_1.Classes
         public double IngredientQuantity { get; set; } = 0;
 
         public string MeasurementUnit { get; set; } = string.Empty;
+
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Default constructor
@@ -30,13 +31,13 @@ namespace PROG6221_POE_Part_1.Classes
         public void IngredientInput()
         {
             Console.WriteLine("-----------------------------------------------------------------");
-            //this.IngredientName = this.IngredientNameInput();
             this.IngredientName = this.GetValidString();
 
-            Console.WriteLine("\r\nPlease enter the Quantity of the Ingredient: ");
-            this.IngredientQuantity = IngredientQuantityInput(Console.ReadLine());
+            this.IngredientQuantity = this.GetIntegerInputFromUser("\r\nPlease enter the Quantity of the Ingredient:");
 
-            this.MeasurementUnit = this.MeasurementUnitInput();
+            this.MeasurementUnit = this.GetStringInputFromUser("\r\nPlease enter the Measurement Unit:");
+
+            //this.MeasurementUnit = this.MeasurementUnitInput();
         }
 
         public string GetValidString()
@@ -51,11 +52,11 @@ namespace PROG6221_POE_Part_1.Classes
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    Console.WriteLine("Invalid input. Please enter a non-null string.");
+                    this.ErrorPrint("\r\nInvalid input. Please enter a non-null string.");
                 }
                 else if (!input.All(c => char.IsLetter(c) || c == ' '))
                 {
-                    Console.WriteLine("Invalid input. Please enter a string containing only letters and spaces.");
+                    this.ErrorPrint("\r\nInvalid input. Please enter a string containing only letters and spaces.");
                 }
                 else
                 {
@@ -86,7 +87,7 @@ namespace PROG6221_POE_Part_1.Classes
                     }
                     else
                     {
-                        Console.WriteLine("Input can only contain letters.");
+                        this.ErrorPrint("\r\nInput can only contain letters.");
                         this.IngredientNameInput();
                     }
                 }
@@ -113,11 +114,11 @@ namespace PROG6221_POE_Part_1.Classes
 
                 if (isOnlyDigits)
                 {
-                    ingNum = int.Parse(input);
+                    ingNum = double.Parse(input);
                 }
                 else
                 {
-                    Console.WriteLine("Please only enter digits\r\n");
+                    this.ErrorPrint("\r\nPlease only enter digits");
                 }
             }
             catch (Exception ex)
@@ -125,6 +126,29 @@ namespace PROG6221_POE_Part_1.Classes
                 Console.WriteLine(ex.ToString());
             }
             return ingNum;
+        }
+
+        public double GetIntegerInputFromUser(string inputString)
+        {
+            double number;
+            bool isValidInput = false;
+
+            do
+            {
+                Console.WriteLine(inputString);
+                string input = Console.ReadLine();
+
+                if (!double.TryParse(input, out number) || input.Contains("-") || !input.All(char.IsDigit) || input.Contains("0"))
+                {
+                    this.ErrorPrint("\r\nInvalid input. Please enter a number.");
+                }
+                else
+                {
+                    isValidInput = true;
+                }
+            } while (!isValidInput);
+
+            return number;
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -148,7 +172,7 @@ namespace PROG6221_POE_Part_1.Classes
                     }
                     else
                     {
-                        Console.WriteLine("Input can only contain letters.");
+                        this.ErrorPrint("\r\nInput can only contain letters.");
                         this.MeasurementUnitInput();
                     }
                 }
@@ -159,6 +183,52 @@ namespace PROG6221_POE_Part_1.Classes
             }
             return result;
         }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Returns value if input is not null and only consists of letters
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public string GetStringInputFromUser(string inputString)
+        {
+            string input;
+            bool isValidInput = false;
+
+            do
+            {
+                Console.WriteLine(inputString);
+                input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input) || !input.All(char.IsLetter))
+                {
+                    this.ErrorPrint("Invalid input. Please enter only letters.");
+                }
+                else
+                {
+                    isValidInput = true;
+                }
+            } while (!isValidInput);
+
+            return input;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Displays message in correct format for errors
+        /// </summary>
+        /// <param name="input"></param>
+        public void ErrorPrint(string input)
+        {
+            // Set the console foreground color to red
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine(input);
+
+            // Reset the console foreground color
+            Console.ResetColor();
+        }
+
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//
