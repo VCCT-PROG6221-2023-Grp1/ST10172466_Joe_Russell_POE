@@ -20,6 +20,8 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         IngredientClass[] IngredientArray;
 
+        IngredientClass[] TempIngredientArray;
+
         /// <summary>
         /// Step Class Array
         /// </summary>
@@ -45,6 +47,10 @@ namespace PROG6221_POE_Part_1.Classes
         public int NumberOfIngredients { get; set; } = 0;
 
         public int NumberOfSteps { get; set; } = 0;
+
+        public int ScaleCounter { get; set; } = 0;
+
+        public double ScaleFactor { get; set; } = 0;
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -92,7 +98,8 @@ namespace PROG6221_POE_Part_1.Classes
                     this.ScaleRecipe();
                     break;
                 case 3:
-                    this.CopyObject(new RecipeClass());
+                    this.ResetQuantity();
+                    //this.CopyObject(new RecipeClass());
                     break;
                 case 4:
                     this.DisplayRecipe();
@@ -181,35 +188,68 @@ namespace PROG6221_POE_Part_1.Classes
         {
             int option = GetIntegerInputFromUser("\r\nEnter 1 for half, 2 for double or 3 for triple");
 
-            switch (option)
+            try
             {
-                case 1:
-                    //Ask Aiden tomorrow about counter
-                    foreach (IngredientClass item in IngredientArray)
-                    {
-                        Console.WriteLine(item.IngredientQuantity);
-                    }
+                TempIngredientArray = new IngredientClass[this.NumberOfIngredients];
+
+                //Save variables to different array
+                if (this.ScaleCounter == 0)
+                {
+                    Console.WriteLine("Test");
+                    Console.ReadLine();
 
                     for (int i = 0; i < this.NumberOfIngredients; i++)
                     {
-                        IngredientArray[i].IngredientQuantity = IngredientArray[i].IngredientQuantity * 0.5;
+                        var ingredients = new IngredientClass();                        
+                        ingredients.IngredientName = this.IngredientClassObjectHere.IngredientName;
+                        ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
+                        ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
+                        TempIngredientArray[i] = ingredients;                        
                     }
-                    break;
-                case 2:
-                    for (int i = 0; i < this.NumberOfIngredients; i++)
-                    {
-                        IngredientArray[i].IngredientQuantity = IngredientArray[i].IngredientQuantity * 2;
-                    }
-                    break;
-                case 3:
-                    for (int i = 0; i < this.NumberOfIngredients; i++)
-                    {
-                        IngredientArray[i].IngredientQuantity = IngredientArray[i].IngredientQuantity * 3;
-                    }
-                    break;
-                default:
-                    Console.WriteLine("Invalid option selected.");
-                    break;
+
+                }
+
+
+                switch (option)
+                {
+                    case 1:
+                        foreach (IngredientClass ingredient in IngredientArray)
+                        {
+                            ingredient.IngredientQuantity = ingredient.IngredientQuantity * 0.5;
+                        }
+                        this.ScaleFactor = 0.5;
+                        this.ScaleCounter++;
+                        /*for (int i = 0; i < this.NumberOfIngredients; i++)
+                        {
+                            IngredientArray[i].IngredientQuantity = IngredientArray[i].IngredientQuantity * 0.5;
+                        }*/
+                        break;
+                    case 2:
+                        this.ScaleFactor = 2;
+                        this.ScaleCounter++;
+
+                        for (int i = 0; i < this.NumberOfIngredients; i++)
+                        {
+                            IngredientArray[i].IngredientQuantity = IngredientArray[i].IngredientQuantity * 2;
+                        }
+                        break;
+                    case 3:
+                        this.ScaleFactor = 3;
+                        this.ScaleCounter++;
+
+                        for (int i = 0; i < this.NumberOfIngredients; i++)
+                        {
+                            IngredientArray[i].IngredientQuantity = IngredientArray[i].IngredientQuantity * 3;
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option selected.");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
 
         }
@@ -254,6 +294,37 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         /// <param name="recipeIn"></param>
         /// <returns></returns>
+        public void ResetQuantity()
+        {
+            try
+            {
+                for (int i = 0; i < this.NumberOfIngredients; i++)
+                {
+                    IngredientArray[i].IngredientQuantity = TempIngredientArray[i].IngredientQuantity;
+                }
+
+                /*for (int i = 0; i < this.ScaleCounter; i++)
+                {
+                    foreach (IngredientClass ingredient in IngredientArray)
+                    {
+                        if (this.ScaleFactor == 0.5)
+                        {
+                            ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
+                        }
+                        else
+                        {
+                            ingredient.IngredientQuantity = ingredient.IngredientQuantity * this.ScaleFactor;
+                        }
+                    }
+                }*/
+            }
+            catch(Exception ex) 
+            { 
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+
         public RecipeClass CopyObject(RecipeClass recipeIn)
         {
             var newRecipe = new RecipeClass();
@@ -273,14 +344,9 @@ namespace PROG6221_POE_Part_1.Classes
             this.NumberOfSteps = 0;
             this.RecipeName = "";
 
-            //StepClass[] ResetStepArray = new StepClass[];
-            //this.StepArray = ResetStepArray;
+            Array.Clear(IngredientArray, 0, IngredientArray.Length);
 
-            int[] numbers = new int[] { 1, 2, 3, 4, 5 };
-
-            // reset the array by creating a new instance of it
-            int[] newNumbers = new int[5];
-            numbers = newNumbers;
+            Array.Clear(StepArray, 0, StepArray.Length);
         }
         
         //-----------------------------------------------------------------------------------------------//
@@ -381,7 +447,7 @@ namespace PROG6221_POE_Part_1.Classes
                 Console.WriteLine(inputString);
                 string input = Console.ReadLine();
 
-                if (!int.TryParse(input, out number) || input.Contains("0"))
+                if (!int.TryParse(input, out number) || input.Contains("0") || !input.All(char.IsDigit))
                 {
                     Console.WriteLine("Invalid input. Please enter a number.");
                 }
