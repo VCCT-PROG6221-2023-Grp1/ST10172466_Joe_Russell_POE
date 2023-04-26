@@ -44,13 +44,15 @@ namespace PROG6221_POE_Part_1.Classes
 
         public int NumberOfSteps { get; set; } = 0;
 
-        public int ScaleCounter { get; set; } = 0;
-
         public double ScaleFactor { get; set; } = 0;
 
         public bool RecipeEntered { get; set; } = false;
 
-        public bool Scaled { get; set; } = false;
+        public bool Scaled { get; set; } = false;        
+
+        //public string RecipeName { get; set; } = string.Empty;
+
+
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -139,7 +141,7 @@ namespace PROG6221_POE_Part_1.Classes
             try
             {
                 this.RecipeName = this.RecipeNameInput();
-                //this.RecipeName = GetStringInputFromUser("\r\nEnter Recipe Name:");
+                //this.RecipeName = MeasurementUnitInputMethod("\r\nEnter Recipe Name:");
                 this.NumberOfIngredients = GetIntegerInputFromUser("\r\nEnter Number of Ingredients:");
 
                 this.IngredientArray = new IngredientClass[NumberOfIngredients];
@@ -218,8 +220,6 @@ namespace PROG6221_POE_Part_1.Classes
                         this.ScaleFactor = 0.5;
 
                         this.Scaled = true;
-
-                        this.ScaleCounter++;
                         break;
                     case 2:
                         foreach (IngredientClass ingredient in IngredientArray)
@@ -229,8 +229,6 @@ namespace PROG6221_POE_Part_1.Classes
                         this.ScaleFactor = 2;
 
                         this.Scaled = true;
-
-                        this.ScaleCounter++;
                         break;
                     case 3:
                         foreach (IngredientClass ingredient in IngredientArray)
@@ -287,6 +285,62 @@ namespace PROG6221_POE_Part_1.Classes
             var newRecipe = new RecipeClass();
             newRecipe.name = recipeIn.name;
             return newRecipe;
+        }
+
+//-----------------------------------------------------------------------------------------------//
+        public static double ConvertFluidOuncesToQuarts(double teaspoons)
+        {
+            const double TEASPOONS_PER_TABLESPOON = 8.0;
+            const double CUPS_PER_PINT = 2.0;
+            const double PINTS_PER_QUART = 2.0;
+
+            double cups = 0.0;
+            double pints = 0.0;
+            double quarts = 0.0;
+
+            if (teaspoons >= TEASPOONS_PER_TABLESPOON)
+            {
+                cups = teaspoons / TEASPOONS_PER_TABLESPOON;
+                teaspoons %= TEASPOONS_PER_TABLESPOON;
+            }
+
+            if (cups >= CUPS_PER_PINT)
+            {
+                pints = cups / CUPS_PER_PINT;
+                cups %= CUPS_PER_PINT;
+            }
+
+            if (pints >= PINTS_PER_QUART)
+            {
+                quarts = pints / PINTS_PER_QUART;
+                pints %= PINTS_PER_QUART;
+            }
+
+            return quarts;
+        }
+
+
+        public double ConvertTeaspoonsToCups(double teaspoons)
+        {
+            const double TEASPOONS_PER_TABLESPOON = 3.0;
+            const double TABLESPOONS_PER_CUP = 16.0;
+
+            double tablespoons = 0.0;
+            double cups = 0.0;
+
+            if (teaspoons >= TEASPOONS_PER_TABLESPOON)
+            {
+                tablespoons = teaspoons / TEASPOONS_PER_TABLESPOON;
+                teaspoons %= TEASPOONS_PER_TABLESPOON;
+            }
+
+            if (tablespoons >= TABLESPOONS_PER_CUP)
+            {
+                cups = tablespoons / TABLESPOONS_PER_CUP;
+                tablespoons %= TABLESPOONS_PER_CUP;
+            }
+
+            return cups;
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -386,31 +440,40 @@ namespace PROG6221_POE_Part_1.Classes
                 Console.WriteLine(ex.ToString());
             }
             return result;
-        }        
+        }
 
         //-----------------------------------------------------------------------------------------------//
         public int GetIntegerInputFromUser(string inputString)
         {
-            int number;
+            int number = 0;
             bool isValidInput = false;
 
-            do
+            Console.WriteLine(inputString);
+            try
             {
-                Console.WriteLine(inputString);
-                string input = Console.ReadLine();
+                while (!isValidInput)
+                {
+                    string input = Console.ReadLine();
 
-                if (!int.TryParse(input, out number) || input.Contains("0") || !input.All(char.IsDigit))
-                {
-                    this.ErrorPrint("Invalid input. Please enter a number.");
+                    if (!int.TryParse(input, out number) || input.Contains("0") || !input.All(char.IsDigit))
+                    {
+                        this.ErrorPrint("Invalid input. Please enter a number.");
+                    }
+                    else
+                    {
+                        isValidInput = true;
+                    }
                 }
-                else
-                {
-                    isValidInput = true;
-                }
-            } while (!isValidInput);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
 
             return number;
         }
+
+
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>

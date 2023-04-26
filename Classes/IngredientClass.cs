@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -14,6 +15,8 @@ namespace PROG6221_POE_Part_1.Classes
         public double IngredientQuantity { get; set; } = 0;
 
         public string MeasurementUnit { get; set; } = string.Empty;
+
+        public string IngredientType { get; set; } = string.Empty;
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -31,11 +34,26 @@ namespace PROG6221_POE_Part_1.Classes
         public void IngredientInput()
         {
             Console.WriteLine("-----------------------------------------------------------------");
-            this.IngredientName = this.GetValidString();
+            this.IngredientName = this.IngredientNameInputMethod("\r\nPlease enter the Ingredient Name:");
 
-            this.IngredientQuantity = this.GetIntegerInputFromUser("\r\nPlease enter the Quantity of the Ingredient:");
+            /*if(this.IngredientType.Equals("Liquid"))
+            {
+                this.MeasurementUnit = string.Empty;
+            }
 
-            this.MeasurementUnit = this.GetStringInputFromUser("\r\nPlease enter the Measurement Unit:");
+            if (this.IngredientType.Equals("Solid"))
+            {
+                this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter the Measurement Unit:");
+            }
+
+            if (this.IngredientType.Equals("Liquid"))
+            {
+
+            }*/
+
+            this.IngredientQuantity = this.IngredientQuantityInputMethod("\r\nPlease enter the Quantity of the Ingredient:");
+
+            this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter the Measurement Unit:");
 
             //this.MeasurementUnit = this.MeasurementUnitInput();
         }
@@ -68,27 +86,23 @@ namespace PROG6221_POE_Part_1.Classes
         }
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// Method to input Ingredient Name with error checking
+        /// Method to input Ingredient Name, checks that input only contains letters and spaces, with error handling
         /// </summary>
+        /// <param name="inputString"></param>
         /// <returns></returns>
-        public string IngredientNameInput()
+        public string IngredientNameInputMethod(string inputString)
         {
-            Console.WriteLine("Please enter the Name of the Ingredient: ");
-            string input = Console.ReadLine();
-            string result = "";
-
+            string input = "";
+            Console.WriteLine(inputString);
             try
             {
-                foreach (char c in input)
+                while (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
                 {
-                    if (char.IsLetter(c))
+                    input = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
                     {
-                        result += c;
-                    }
-                    else
-                    {
-                        this.ErrorPrint("\r\nInput can only contain letters.");
-                        this.IngredientNameInput();
+                        this.ErrorPrint("Invalid input. Please enter only letters.");
                     }
                 }
             }
@@ -96,64 +110,50 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 Console.WriteLine(ex.ToString());
             }
-            return result;
+
+            return input;
         }
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// Method to input Ingredient Quantity with error checking
+        /// Method to input Ingredient Quantity, checks that input only contains doubles, with error handling
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="inputString"></param>
         /// <returns></returns>
-        public double IngredientQuantityInput(string input)
+        public double IngredientQuantityInputMethod(string inputString)
         {
-            double ingNum = 0;
+            double number = 0;
+            bool isValidInput = false;
+
+            Console.WriteLine(inputString);
             try
             {
-                bool isOnlyDigits = !string.IsNullOrEmpty(input) && input.All(char.IsDigit);
+                while (!isValidInput)
+                {
+                    string input = Console.ReadLine();
 
-                if (isOnlyDigits)
-                {
-                    ingNum = double.Parse(input);
-                }
-                else
-                {
-                    this.ErrorPrint("\r\nPlease only enter digits");
+                    if (!double.TryParse(input, out number))
+                    {
+                        this.ErrorPrint("Invalid input. Please enter a number.");
+                    }
+                    else
+                    {
+                        isValidInput = true;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-            return ingNum;
-        }
-
-        public double GetIntegerInputFromUser(string inputString)
-        {
-            double number;
-            bool isValidInput = false;
-
-            do
-            {
-                Console.WriteLine(inputString);
-                string input = Console.ReadLine();
-
-                if (!double.TryParse(input, out number) || input.Contains("-") || !input.All(char.IsDigit) || input.Contains("0"))
-                {
-                    this.ErrorPrint("\r\nInvalid input. Please enter a number.");
-                }
-                else
-                {
-                    isValidInput = true;
-                }
-            } while (!isValidInput);
 
             return number;
         }
 
+
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// Method to input Measurement Unit with error checking
+        /// Method to input Measurement Unit, checks that input only contains letters, with error handling
         /// </summary>
         /// <returns></returns>
         public string MeasurementUnitInput()
@@ -190,25 +190,26 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         /// <param name="inputString"></param>
         /// <returns></returns>
-        public string GetStringInputFromUser(string inputString)
+        public string MeasurementUnitInputMethod(string inputString)
         {
-            string input;
-            bool isValidInput = false;
-
-            do
+            string input = "";
+            Console.WriteLine(inputString);
+            try
             {
-                Console.WriteLine(inputString);
-                input = Console.ReadLine();
+                while (string.IsNullOrEmpty(input) || !input.All(char.IsLetter))
+                {
+                    input = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(input) || !input.All(char.IsLetter))
-                {
-                    this.ErrorPrint("Invalid input. Please enter only letters.");
+                    if (string.IsNullOrEmpty(input) || !input.All(char.IsLetter))
+                    {
+                        this.ErrorPrint("Invalid input. Please enter only letters.");
+                    }
                 }
-                else
-                {
-                    isValidInput = true;
-                }
-            } while (!isValidInput);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
 
             return input;
         }
@@ -228,7 +229,6 @@ namespace PROG6221_POE_Part_1.Classes
             // Reset the console foreground color
             Console.ResetColor();
         }
-
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//
