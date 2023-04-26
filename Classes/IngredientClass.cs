@@ -54,36 +54,8 @@ namespace PROG6221_POE_Part_1.Classes
             this.IngredientQuantity = this.IngredientQuantityInputMethod("\r\nPlease enter the Quantity of the Ingredient:");
 
             this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter the Measurement Unit:");
-
-            //this.MeasurementUnit = this.MeasurementUnitInput();
         }
 
-        public string GetValidString()
-        {
-            string input;
-            bool isValid = false;
-
-            do
-            {
-                Console.WriteLine("Please enter the Name of the Ingredient: ");
-                input = Console.ReadLine();
-
-                if (string.IsNullOrWhiteSpace(input))
-                {
-                    this.ErrorPrint("\r\nInvalid input. Please enter a non-null string.");
-                }
-                else if (!input.All(c => char.IsLetter(c) || c == ' '))
-                {
-                    this.ErrorPrint("\r\nInvalid input. Please enter a string containing only letters and spaces.");
-                }
-                else
-                {
-                    isValid = true;
-                }
-            } while (!isValid);
-
-            return input;
-        }
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to input Ingredient Name, checks that input only contains letters and spaces, with error handling
@@ -132,9 +104,9 @@ namespace PROG6221_POE_Part_1.Classes
                 {
                     string input = Console.ReadLine();
 
-                    if (!double.TryParse(input, out number))
+                    if (!double.TryParse(input, out number) || input.Contains("-") || number == 0)
                     {
-                        this.ErrorPrint("Invalid input. Please enter a number.");
+                        this.ErrorPrint("Invalid input. Please enter a valid number.");
                     }
                     else
                     {
@@ -150,43 +122,9 @@ namespace PROG6221_POE_Part_1.Classes
             return number;
         }
 
-
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// Method to input Measurement Unit, checks that input only contains letters, with error handling
-        /// </summary>
-        /// <returns></returns>
-        public string MeasurementUnitInput()
-        {
-            Console.WriteLine("\r\nPlease enter the Measurement Unit of the Ingredient: ");
-            string input = Console.ReadLine();
-            string result = "";
-
-            try
-            {
-                foreach (char c in input)
-                {
-                    if (char.IsLetter(c))
-                    {
-                        result += c;
-                    }
-                    else
-                    {
-                        this.ErrorPrint("\r\nInput can only contain letters.");
-                        this.MeasurementUnitInput();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            return result;
-        }
-
-        //-----------------------------------------------------------------------------------------------//
-        /// <summary>
-        /// Returns value if input is not null and only consists of letters
+        /// Method to input Measurement Unit, checks that input is not null and only contains letters, with error handling
         /// </summary>
         /// <param name="inputString"></param>
         /// <returns></returns>

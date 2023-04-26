@@ -30,6 +30,14 @@ namespace PROG6221_POE_Part_1.Classes
         {
             RecipeClassObjectHere.RunRecipe();
         }
+
+        public RecipeClass CopyObject(RecipeClass recipeIn)
+        {
+            var newRecipe = new RecipeClass();
+            newRecipe.name = recipeIn.name;
+            return newRecipe;
+        }
+
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//

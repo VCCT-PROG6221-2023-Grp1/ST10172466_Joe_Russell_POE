@@ -26,45 +26,45 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void StepInput()
         {
-            this.StepDescription = this.StepDescriptionInput();
+            this.StepDescription = this.StepDescriptionInputMethod("\r\nPlease enter the step description: ");
         }
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// Method to input Step Description with error checking
+        /// Method to input Step Description, checks that input is not null, with error handling
         /// </summary>
+        /// <param name="inputString"></param>
         /// <returns></returns>
-        public string StepDescriptionInput()
+        public string StepDescriptionInputMethod(string inputString)
         {
-            Console.WriteLine("\r\nPlease enter the step description: ");
-            string input = Console.ReadLine();
-            string result = "";
-
+            string input = "";
+            Console.WriteLine(inputString);
             try
             {
-                if (!string.IsNullOrEmpty(input))
+                while (string.IsNullOrWhiteSpace(input))
                 {
-                    result += input;
-                }
-                else
-                {
-                    // Set the console foreground color to red
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    input = Console.ReadLine();
 
-                    Console.WriteLine("\r\nInput cannot be empty");
+                    if (string.IsNullOrWhiteSpace(input))
+                    {
+                        // Set the console foreground color to red
+                        Console.ForegroundColor = ConsoleColor.Red;
 
-                    // Reset the console foreground color
-                    Console.ResetColor();
-                    Console.ReadLine();
-                    this.StepDescriptionInput();
+                        Console.WriteLine("Invalid input. Please enter a non-empty value.");
+
+                        // Reset the console foreground color
+                        Console.ResetColor();
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-            return result;
+
+            return input;
         }
+
         //-----------------------------------------------------------------------------------------------//
     }
 }

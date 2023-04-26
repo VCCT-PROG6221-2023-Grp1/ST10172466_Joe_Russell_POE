@@ -48,7 +48,10 @@ namespace PROG6221_POE_Part_1.Classes
 
         public bool RecipeEntered { get; set; } = false;
 
-        public bool Scaled { get; set; } = false;        
+        public bool Scaled { get; set; } = false;
+
+        public bool ScaleReset { get; set; } = false;
+
 
         //public string RecipeName { get; set; } = string.Empty;
 
@@ -73,7 +76,7 @@ namespace PROG6221_POE_Part_1.Classes
             this.Format();
 
             //Switch statement input
-            int option = GetIntegerInputFromUser("     Enter 1 to enter Recipe Details" +
+            int option = GetPositiveIntegerInput("     Enter 1 to enter Recipe Details" +
                 "\n     Enter 2 to Scale Recipe Quantity Values" +
                 "\n     Enter 3 to Reset Quantity Values" +
                 "\n     Enter 4 to View Recipe" +
@@ -130,7 +133,11 @@ namespace PROG6221_POE_Part_1.Classes
             this.RunRecipe();
 
         }
-
+        
+        //-----------------------------------------------------------------------------------------------//
+        
+        //Input Methods
+        
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to get the Ingredient Inputs
@@ -140,9 +147,9 @@ namespace PROG6221_POE_Part_1.Classes
             //Try-catch to handle errors
             try
             {
-                this.RecipeName = this.RecipeNameInput();
+                this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
                 //this.RecipeName = MeasurementUnitInputMethod("\r\nEnter Recipe Name:");
-                this.NumberOfIngredients = GetIntegerInputFromUser("\r\nEnter Number of Ingredients:");
+                this.NumberOfIngredients = GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
 
                 this.IngredientArray = new IngredientClass[NumberOfIngredients];
 
@@ -174,7 +181,7 @@ namespace PROG6221_POE_Part_1.Classes
             try
             {
                 Console.WriteLine("--------------------------------------------------------------------------------------");
-                this.NumberOfSteps = GetIntegerInputFromUser("\r\nEnter Number of Steps: ");
+                this.NumberOfSteps = GetPositiveIntegerInput("\r\nEnter Number of Steps: ");
 
                 StepArray = new StepClass[this.NumberOfSteps];
 
@@ -191,7 +198,11 @@ namespace PROG6221_POE_Part_1.Classes
                 Console.WriteLine(ex.ToString());
             }
         }
-
+        
+        //-----------------------------------------------------------------------------------------------//
+        
+        //Scaling Methods
+        
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to scale the Quantities
@@ -205,10 +216,20 @@ namespace PROG6221_POE_Part_1.Classes
                 return;
             }
 
-            int option = GetIntegerInputFromUser("\r\nEnter 1 for half, 2 for double or 3 for triple");
+            int option = GetPositiveIntegerInput("\r\nEnter 1 for half, 2 for double or 3 for triple");
+
+            if (option > 3)
+            {
+                this.ErrorPrint("\r\nInvalid Input");
+                Console.ReadLine();
+                return;
+            }
+
 
             try
             {
+                this.ScaleReset = true;
+
                 //Save variables to different array
                 switch (option)
                 {
@@ -258,6 +279,13 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public void ResetQuantity()
         {
+            if (this.ScaleReset == false)
+            {
+                this.ErrorPrint("\r\nScale Recipe First");
+                Console.ReadLine();
+                return;
+            }
+
             try
             {
                 this.Scaled = false;
@@ -273,21 +301,26 @@ namespace PROG6221_POE_Part_1.Classes
                         ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
                     }
                 }
+
+                //Set the console foreground color to green
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Successfully Reset");
+
+                //Reset the console foreground color
+                Console.ResetColor();                
+                Console.ReadLine();
+
+                //Prevent quantity being reset before being scaled again
+                this.ScaleReset = false;
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
+        }        
 
-        public RecipeClass CopyObject(RecipeClass recipeIn)
-        {
-            var newRecipe = new RecipeClass();
-            newRecipe.name = recipeIn.name;
-            return newRecipe;
-        }
-
-//-----------------------------------------------------------------------------------------------//
+        //-----------------------------------------------------------------------------------------------//
         public static double ConvertFluidOuncesToQuarts(double teaspoons)
         {
             const double TEASPOONS_PER_TABLESPOON = 8.0;
@@ -396,7 +429,7 @@ namespace PROG6221_POE_Part_1.Classes
         {
             this.ErrorPrint("Are you sure you want to clear this recipe. Warning, this recipe will be permanently deleted!");
 
-            int confirm = this.GetIntegerInputFromUser("Enter 1 to continue");
+            int confirm = this.GetPositiveIntegerInput("Enter 1 to continue");
 
             if (confirm == 1)
             {
@@ -409,41 +442,62 @@ namespace PROG6221_POE_Part_1.Classes
                 Array.Clear(IngredientArray, 0, IngredientArray.Length);
 
                 Array.Clear(StepArray, 0, StepArray.Length);
+
+                // Set the console foreground color to red
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\r\n     Successfully Deleted");
+
+                // Reset the console foreground color
+                Console.ResetColor();
+                Console.ReadLine();
+            }
+            else
+            {
+                this.ErrorPrint("\r\n       Cancelled");
+                Console.ReadLine();
             }
         }
 
         //-----------------------------------------------------------------------------------------------//
 
-        //Error Handling & Format Methods
+        //Error Handling Methods
 
         //-----------------------------------------------------------------------------------------------//
-        public string RecipeNameInput()
+        /// <summary>
+        /// Method to input Recipe Name, checks that input only contains letters and spaces, with error handling
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public string RecipeNameInputMethod(string inputString)
         {
-            Console.WriteLine("\r\nEnter Recipe Name:");
-            string input = Console.ReadLine();
-            string result = "";
-
+            string input = "";
+            Console.WriteLine(inputString);
             try
             {
-                if (!string.IsNullOrEmpty(input))
+                while (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
                 {
-                    result += input;
-                }
-                else
-                {
-                    this.ErrorPrint("\r\nInput cannot be null");
-                    this.RecipeNameInput();
+                    input = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
+                    {
+                        this.ErrorPrint("Invalid input. Please enter only letters.");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-            return result;
-        }
 
+            return input;
+        }
         //-----------------------------------------------------------------------------------------------//
-        public int GetIntegerInputFromUser(string inputString)
+        /// <summary>
+        /// Method that accepts a string and returns a positive int, with error handling
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public int GetPositiveIntegerInput(string inputString)
         {
             int number = 0;
             bool isValidInput = false;
@@ -473,7 +527,9 @@ namespace PROG6221_POE_Part_1.Classes
             return number;
         }
 
+        //-----------------------------------------------------------------------------------------------//
 
+        //Format Methods
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -529,6 +585,7 @@ namespace PROG6221_POE_Part_1.Classes
             // Reset the console foreground color
             Console.ResetColor();
         }
+        //-----------------------------------------------------------------------------------------------//
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//
