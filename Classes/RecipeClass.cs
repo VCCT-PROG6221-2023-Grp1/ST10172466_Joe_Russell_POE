@@ -34,6 +34,11 @@ namespace PROG6221_POE_Part_1.Classes
         public StepClass StepClassObjectHere = new StepClass();
 
         /// <summary>
+        /// Local Conversion Class Object
+        /// </summary>
+        public ConversionClass ConversionClassObjectHere = new ConversionClass();
+
+        /// <summary>
         /// String that holds the Recipe Name
         /// </summary>
         public string RecipeName { get; set; } = string.Empty;
@@ -148,7 +153,7 @@ namespace PROG6221_POE_Part_1.Classes
             try
             {
                 this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
-                //this.RecipeName = MeasurementUnitInputMethod("\r\nEnter Recipe Name:");
+
                 this.NumberOfIngredients = GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
 
                 this.IngredientArray = new IngredientClass[NumberOfIngredients];
@@ -237,6 +242,10 @@ namespace PROG6221_POE_Part_1.Classes
                         foreach (IngredientClass ingredient in IngredientArray)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 0.5;
+
+                            this.ConversionClassObjectHere.ConvertQuantities(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
+                            ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
                         }
                         this.ScaleFactor = 0.5;
 
@@ -318,63 +327,11 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 Console.WriteLine(ex.ToString());
             }
-        }        
+        }                
 
         //-----------------------------------------------------------------------------------------------//
-        public static double ConvertFluidOuncesToQuarts(double teaspoons)
-        {
-            const double TEASPOONS_PER_TABLESPOON = 8.0;
-            const double CUPS_PER_PINT = 2.0;
-            const double PINTS_PER_QUART = 2.0;
 
-            double cups = 0.0;
-            double pints = 0.0;
-            double quarts = 0.0;
-
-            if (teaspoons >= TEASPOONS_PER_TABLESPOON)
-            {
-                cups = teaspoons / TEASPOONS_PER_TABLESPOON;
-                teaspoons %= TEASPOONS_PER_TABLESPOON;
-            }
-
-            if (cups >= CUPS_PER_PINT)
-            {
-                pints = cups / CUPS_PER_PINT;
-                cups %= CUPS_PER_PINT;
-            }
-
-            if (pints >= PINTS_PER_QUART)
-            {
-                quarts = pints / PINTS_PER_QUART;
-                pints %= PINTS_PER_QUART;
-            }
-
-            return quarts;
-        }
-
-
-        public double ConvertTeaspoonsToCups(double teaspoons)
-        {
-            const double TEASPOONS_PER_TABLESPOON = 3.0;
-            const double TABLESPOONS_PER_CUP = 16.0;
-
-            double tablespoons = 0.0;
-            double cups = 0.0;
-
-            if (teaspoons >= TEASPOONS_PER_TABLESPOON)
-            {
-                tablespoons = teaspoons / TEASPOONS_PER_TABLESPOON;
-                teaspoons %= TEASPOONS_PER_TABLESPOON;
-            }
-
-            if (tablespoons >= TABLESPOONS_PER_CUP)
-            {
-                cups = tablespoons / TABLESPOONS_PER_CUP;
-                tablespoons %= TABLESPOONS_PER_CUP;
-            }
-
-            return cups;
-        }
+        //Display Recipe
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -420,7 +377,11 @@ namespace PROG6221_POE_Part_1.Classes
             Console.WriteLine(stepDisplay);
             Console.ReadLine();
         }
-
+        
+        //-----------------------------------------------------------------------------------------------//
+        
+        //Reset/Clear Recipe
+        
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to Reset Recipe

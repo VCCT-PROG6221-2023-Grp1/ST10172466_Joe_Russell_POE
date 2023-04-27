@@ -36,24 +36,41 @@ namespace PROG6221_POE_Part_1.Classes
             Console.WriteLine("-----------------------------------------------------------------");
             this.IngredientName = this.IngredientNameInputMethod("\r\nPlease enter the Ingredient Name:");
 
-            /*if(this.IngredientType.Equals("Liquid"))
+            //
+            int option = GetPositiveIntegerInput("Choose Measurement Unit:" +
+                "\r\n1. Teaspoons" +
+                "\r\n2. Fluid Ounces" +
+                "\r\n3. Grams");
+
+            //Prevents incorrect switch statement choice
+            if (option > 3)
             {
-                this.MeasurementUnit = string.Empty;
+                this.ErrorPrint("\r\nInvalid Input");
+                Console.ReadLine();
+                return;
             }
 
-            if (this.IngredientType.Equals("Solid"))
+            //Switch statement to assign variable   
+            switch (option)
             {
-                this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter the Measurement Unit:");
-            }
-
-            if (this.IngredientType.Equals("Liquid"))
-            {
-
-            }*/
+                case 1:
+                    this.MeasurementUnit = "Teaspoons";
+                    break;
+                case 2:
+                    this.MeasurementUnit = "Fluid Ounces";
+                    break;
+                case 3:
+                    this.MeasurementUnit = "Grams";
+                    break;              
+                default:
+                    this.ErrorPrint("Invalid option selected.");
+                    Console.ReadLine();
+                    break;
+            }            
 
             this.IngredientQuantity = this.IngredientQuantityInputMethod("\r\nPlease enter the Quantity of the Ingredient:");
 
-            this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter the Measurement Unit:");
+            //this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter the Measurement Unit:");
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -150,6 +167,37 @@ namespace PROG6221_POE_Part_1.Classes
             }
 
             return input;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        public int GetPositiveIntegerInput(string inputString)
+        {
+            int number = 0;
+            bool isValidInput = false;
+
+            Console.WriteLine(inputString);
+            try
+            {
+                while (!isValidInput)
+                {
+                    string input = Console.ReadLine();
+
+                    if (!int.TryParse(input, out number) || input.Contains("0") || !input.All(char.IsDigit))
+                    {
+                        this.ErrorPrint("Invalid input. Please enter a number.");
+                    }
+                    else
+                    {
+                        isValidInput = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return number;
         }
 
         //-----------------------------------------------------------------------------------------------//

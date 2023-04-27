@@ -29,14 +29,17 @@ namespace PROG6221_POE_Part_1.Classes
         public void RunWorker()
         {
             RecipeClassObjectHere.RunRecipe();
+            
+            //Part 2 Code:
+            //CopyObject(RecipeClassObjectHere);
         }
 
-        public RecipeClass CopyObject(RecipeClass recipeIn)
+        /*public RecipeClass CopyObject(RecipeClass recipeIn)
         {
             var newRecipe = new RecipeClass();
             newRecipe.name = recipeIn.name;
             return newRecipe;
-        }
+        }*/
 
     }
 }
