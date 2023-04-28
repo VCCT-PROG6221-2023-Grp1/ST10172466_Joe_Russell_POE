@@ -15,147 +15,122 @@ namespace PROG6221_POE_Part_1.Classes
         //-----------------------------------------------------------------------------------------------//
         public ConversionClass() { }
         //-----------------------------------------------------------------------------------------------//
-        public void ConvertQuantities(string MeasurementUnitInput, double IngredientQuantityInput)
+        public void ConvertQuantitiesUpwards(string MeasurementUnitInput, double IngredientQuantityInput)
         {
             this.MeasurementUnitHere = MeasurementUnitInput;
 
-            if (MeasurementUnitInput.Equals("Teaspoons"))
+            if (MeasurementUnitInput.Equals("Millilitres"))
             {
-                this.ConvertTeaspoonsToCups(IngredientQuantityInput);
+                this.ConvertMillilitresToLitres(IngredientQuantityInput);
             }
-            else if (MeasurementUnitInput.Equals("Fluid Ounces"))
-            {
-                this.ConvertFluidOuncesToQuarts(IngredientQuantityInput);
-            }
+
             else if (MeasurementUnitInput.Equals("Grams"))
             {
                 this.ConvertGramsToKilograms(IngredientQuantityInput);
             }
-        }        
-
-        //-----------------------------------------------------------------------------------------------//
-        public double ConvertTeaspoonsToCups(double teaspoons)
-        {
-            const double TEASPOONS_PER_TABLESPOON = 3.0;
-            const double TABLESPOONS_PER_CUP = 16.0;
-
-            double tablespoons = 0.0;
-            double cups = 0.0;
-
-            if (teaspoons >= TEASPOONS_PER_TABLESPOON)
-            {
-                tablespoons = teaspoons / TEASPOONS_PER_TABLESPOON;
-                teaspoons %= TEASPOONS_PER_TABLESPOON;
-
-                if (tablespoons == 1)
-                {
-                    this.MeasurementUnitHere = "Tablespoon";
-                    this.IngredientQuantityHere = tablespoons;
-
-                }
-                this.MeasurementUnitHere = "Tablespoons";
-                this.IngredientQuantityHere = tablespoons;
-            }
-
-            if (tablespoons >= TABLESPOONS_PER_CUP)
-            {
-                cups = tablespoons / TABLESPOONS_PER_CUP;
-                tablespoons %= TABLESPOONS_PER_CUP;
-
-                if (cups == 1)
-                {
-                    this.MeasurementUnitHere = "Cup";
-                    this.IngredientQuantityHere = cups;
-                }
-                this.MeasurementUnitHere = "Cups";
-                this.IngredientQuantityHere = cups;
-            }
-
-            return cups;
         }
 
-//-----------------------------------------------------------------------------------------------//
-        public double ConvertFluidOuncesToQuarts(double fluidOunces)
+        public void ConvertQuantitiesDownwards(string MeasurementUnitInput, double IngredientQuantityInput)
         {
-            const double FLUID_OUNCES_PER_CUP = 8.0;
-            const double CUPS_PER_PINT = 2.0;
-            const double PINTS_PER_QUART = 2.0;
+            this.MeasurementUnitHere = MeasurementUnitInput;
 
-            double cups = 0.0;
-            double pints = 0.0;
-            double quarts = 0.0;
-
-            if (fluidOunces >= FLUID_OUNCES_PER_CUP)
+            if (MeasurementUnitInput.Equals("Millilitres"))
             {
-                cups = fluidOunces / FLUID_OUNCES_PER_CUP;
-                fluidOunces %= FLUID_OUNCES_PER_CUP;
-
-                if (cups == 1)
-                {
-                    this.MeasurementUnitHere = "Cup";
-                    this.IngredientQuantityHere = cups;
-                }
-                this.MeasurementUnitHere = "Cups";
-                this.IngredientQuantityHere = cups;
+                this.ConvertLitresToMillilitres(IngredientQuantityInput);
             }
 
-            if (cups >= CUPS_PER_PINT)
+            else if (MeasurementUnitInput.Equals("Grams"))
             {
-                pints = cups / CUPS_PER_PINT;
-                cups %= CUPS_PER_PINT;
-
-                if (pints == 1)
-                {
-                    this.MeasurementUnitHere = "Pint";
-                    this.IngredientQuantityHere = pints;
-                }
-                this.MeasurementUnitHere = "Pints";
-                this.IngredientQuantityHere = pints;
+                this.ConvertKilogramsToGrams(IngredientQuantityInput);
             }
-
-            if (pints >= PINTS_PER_QUART)
-            {
-                quarts = pints / PINTS_PER_QUART;
-                pints %= PINTS_PER_QUART;
-
-                if (quarts == 1)
-                {
-                    this.MeasurementUnitHere = "Quart";
-                    this.IngredientQuantityHere = quarts;
-                }
-                this.MeasurementUnitHere = "Quarts";
-                this.IngredientQuantityHere = quarts;
-            }
-
-            return quarts;
         }
 
         //-----------------------------------------------------------------------------------------------//
-        public double ConvertGramsToKilograms(double grams)
+        public void ConvertMillilitresToLitres(double millilitres)
         {
-            const double GRAMS_PER_KILOGRAM = 1000.0;
+            double litres = 0;
 
-            double kilograms = 0.0;
-
-
-            if (grams >= GRAMS_PER_KILOGRAM)
+            if (millilitres >= 1000)
             {
-                kilograms = grams / GRAMS_PER_KILOGRAM;
-                grams %= GRAMS_PER_KILOGRAM;
+                litres = millilitres / 1000;
+                if (litres == 1)
+                {
+                    this.MeasurementUnitHere = "Litre";
+                    this.IngredientQuantityHere = litres;
+                }
+                else
+                {
+                    this.MeasurementUnitHere = "Litres";
+                    this.IngredientQuantityHere = litres;
+                }
+            }
+        }
 
+
+        //-----------------------------------------------------------------------------------------------//
+        public void ConvertGramsToKilograms(double grams)
+        {
+            double kilograms = 0;
+
+            if (grams >= 1000)
+            {
+                kilograms = grams / 1000;
                 if (kilograms == 1)
                 {
                     this.MeasurementUnitHere = "Kilogram";
                     this.IngredientQuantityHere = kilograms;
                 }
-                this.MeasurementUnitHere = "Kilograms";
-                this.IngredientQuantityHere = kilograms;
+                else
+                {
+                    this.MeasurementUnitHere = "Kilograms";
+                    this.IngredientQuantityHere = kilograms;
+                }
             }
-
-            return kilograms;
         }
 
         //-----------------------------------------------------------------------------------------------//
+        //-----------------------------------------------------------------------------------------------//
+        public void ConvertLitresToMillilitres(double litres)
+        {
+            double millilitres = 0;
+
+            if (litres <= 1)
+            {
+                millilitres = litres * 1000;
+                if (millilitres == 1)
+                {
+                    this.MeasurementUnitHere = "Milliitre";
+                    this.IngredientQuantityHere = millilitres;
+                }
+                else
+                {
+                    this.MeasurementUnitHere = "Millilitres";
+                    this.IngredientQuantityHere = millilitres;
+                }
+            }
+        }
+
+
+        //-----------------------------------------------------------------------------------------------//
+        public void ConvertKilogramsToGrams(double kilograms)
+        {
+            double grams = 0;
+
+            if (kilograms <= 1)
+            {
+                grams = kilograms * 1000;
+                if (grams == 1)
+                {
+                    this.MeasurementUnitHere = "Gram";
+                    this.IngredientQuantityHere = grams;
+                }
+                else
+                {
+                    this.MeasurementUnitHere = "Grams";
+                    this.IngredientQuantityHere = grams;
+                }
+            }
+        }
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//

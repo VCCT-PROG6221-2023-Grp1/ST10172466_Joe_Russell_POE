@@ -38,12 +38,11 @@ namespace PROG6221_POE_Part_1.Classes
 
             //
             int option = GetPositiveIntegerInput("Choose Measurement Unit:" +
-                "\r\n1. Teaspoons" +
-                "\r\n2. Fluid Ounces" +
-                "\r\n3. Grams");
+                "\r\n       Enter 1 for Millilitres" +
+                "\r\n       Enter 2 for Grams");
 
             //Prevents incorrect switch statement choice
-            if (option > 3)
+            if (option > 2)
             {
                 this.ErrorPrint("\r\nInvalid Input");
                 Console.ReadLine();
@@ -54,14 +53,11 @@ namespace PROG6221_POE_Part_1.Classes
             switch (option)
             {
                 case 1:
-                    this.MeasurementUnit = "Teaspoons";
+                    this.MeasurementUnit = "Millilitres";
                     break;
                 case 2:
-                    this.MeasurementUnit = "Fluid Ounces";
-                    break;
-                case 3:
                     this.MeasurementUnit = "Grams";
-                    break;              
+                    break;
                 default:
                     this.ErrorPrint("Invalid option selected.");
                     Console.ReadLine();

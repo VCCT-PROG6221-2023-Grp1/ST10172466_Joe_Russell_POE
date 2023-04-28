@@ -243,9 +243,19 @@ namespace PROG6221_POE_Part_1.Classes
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 0.5;
 
-                            this.ConversionClassObjectHere.ConvertQuantities(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-                            ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
-                            ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
+                            this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            
+                            if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
+                            {
+                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
+                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
+                            }
+
+                            if (this.ConversionClassObjectHere.IngredientQuantityHere < 1)
+                            {
+                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
+                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
+                            }
                         }
                         this.ScaleFactor = 0.5;
 
@@ -255,6 +265,14 @@ namespace PROG6221_POE_Part_1.Classes
                         foreach (IngredientClass ingredient in IngredientArray)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 2;
+
+                            this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+
+                            if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
+                            {
+                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
+                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
+                            }
                         }
                         this.ScaleFactor = 2;
 
@@ -264,6 +282,14 @@ namespace PROG6221_POE_Part_1.Classes
                         foreach (IngredientClass ingredient in IngredientArray)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 3;
+
+                            this.ConversionClassObjectHere.ConvertQuantities(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+
+                            if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
+                            {
+                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
+                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
+                            }
                         }
                         this.ScaleFactor = 3;
                         this.Scaled = true;
