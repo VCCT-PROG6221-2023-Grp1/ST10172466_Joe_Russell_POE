@@ -88,7 +88,7 @@ namespace PROG6221_POE_Part_1.Classes
             this.Format();
 
             //Switch statement input
-            int option = GetPositiveIntegerInput("     Enter 1 to enter Recipe Details" +
+            int option = GetPositiveIntegerInput("     Enter 1 to Enter Recipe Details" +
                 "\n     Enter 2 to Scale Recipe Quantity Values" +
                 "\n     Enter 3 to Reset Quantity Values" +
                 "\n     Enter 4 to View Recipe" +
