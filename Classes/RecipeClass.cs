@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace PROG6221_POE_Part_1.Classes
 {
-    /*
-     * To Do List:
-     * 
-     */
-
     internal class RecipeClass
     {
         /// <summary>
@@ -33,34 +28,46 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public StepClass StepClassObjectHere = new StepClass();
 
+        //------- Part 2 Code -------
         /// <summary>
         /// Local Conversion Class Object
         /// </summary>
-        public ConversionClass ConversionClassObjectHere = new ConversionClass();
+        //public ConversionClass ConversionClassObjectHere = new ConversionClass();
 
         /// <summary>
         /// String that holds the Recipe Name
         /// </summary>
         public string RecipeName { get; set; } = string.Empty;
 
-        public string name { get; set; } = string.Empty;
-
+        /// <summary>
+        /// Int that holds the number of ingredients
+        /// </summary>
         public int NumberOfIngredients { get; set; } = 0;
 
+        /// <summary>
+        /// Int that holds the number of steps
+        /// </summary>
         public int NumberOfSteps { get; set; } = 0;
 
+        /// <summary>
+        /// Double that holds the ammount that ingredients are scaled by
+        /// </summary>
         public double ScaleFactor { get; set; } = 0;
 
+        /// <summary>
+        /// Bool that checks whether a recipe has been entered or not
+        /// </summary>
         public bool RecipeEntered { get; set; } = false;
 
+        /// <summary>
+        /// Bool that checks whether a recipe has been scaled or not
+        /// </summary>
         public bool Scaled { get; set; } = false;
 
+        /// <summary>
+        /// Bool that checks whether a recipe's scaling has been reset or not
+        /// </summary>
         public bool ScaleReset { get; set; } = false;
-
-
-        //public string RecipeName { get; set; } = string.Empty;
-
-
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -101,9 +108,10 @@ namespace PROG6221_POE_Part_1.Classes
             switch (option)
             {
                 case 1:
+                    //Runs input methods if recipe is empty
                     if (this.RecipeEntered == false)
                     {
-                        this.GetRecipeInput();
+                        this.GetRecipeIngredientInput();
                         this.GetRecipeStepInput();
                     }
                     else
@@ -113,18 +121,23 @@ namespace PROG6221_POE_Part_1.Classes
                     }
                     break;
                 case 2:
+                    //Runs scaling method
                     this.ScaleRecipe();
                     break;
                 case 3:
+                    //Runs scale Reset method
                     this.ResetQuantity();
                     break;
                 case 4:
+                    //Runs display method
                     this.DisplayRecipe();
                     break;
                 case 5:
+                    //Runs delete recipe method
                     this.ClearRecipe();
                     break;
                 case 6:
+                    //Exits application
                     Environment.Exit(0);
                     break;
                 default:
@@ -147,27 +160,35 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Method to get the Ingredient Inputs
         /// </summary>
-        public void GetRecipeInput()
-        {
+        public void GetRecipeIngredientInput()
+        {                        
             //Try-catch to handle errors
             try
             {
+                //Assigns value to Recipe Name by calling input method
                 this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
 
+                //Assigns value to Number of Ingredients by calling input method
                 this.NumberOfIngredients = GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
 
+                //Initialises Ingredient Array
                 this.IngredientArray = new IngredientClass[NumberOfIngredients];
 
+                //For loop to populate Ingredient Array
                 for (int i = 0; i < this.NumberOfIngredients; i++)
                 {
                     var ingredients = new IngredientClass();
+                    
+                    //Calling method to input ingredient values
                     IngredientClassObjectHere.IngredientInput();
+
+                    //Assigning values to Ingredient Array
                     ingredients.IngredientName = this.IngredientClassObjectHere.IngredientName;
                     ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
                     ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
                     this.IngredientArray[i] = ingredients;
                 }
-
+                //Setting bool to true to prevent recipe from being entered again before being reset
                 this.RecipeEntered = true;
             }
             catch (Exception ex)
@@ -185,15 +206,26 @@ namespace PROG6221_POE_Part_1.Classes
             //Try-catch to handle errors
             try
             {
-                Console.WriteLine("--------------------------------------------------------------------------------------");
+                // Set the console foreground color to dark red then reset it after displaying a string
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("____________________________________________________________________");
+                Console.ResetColor();
+
+                //Assigns value to Number of Steps by calling input method
                 this.NumberOfSteps = GetPositiveIntegerInput("\r\nEnter Number of Steps: ");
 
+                //Initialises Step Array
                 StepArray = new StepClass[this.NumberOfSteps];
 
+                //For loop to populate Step Array
                 for (int i = 0; i < this.NumberOfSteps; i++)
                 {
                     var steps = new StepClass();
+
+                    //Calling method to input step values
                     StepClassObjectHere.StepInput();
+
+                    //Assigning values to Step Array
                     steps.StepDescription = this.StepClassObjectHere.StepDescription;
                     StepArray[i] = steps;
                 }
@@ -214,6 +246,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void ScaleRecipe()
         {
+            //If statement checks to see if recipe has been scaled before
             if (this.Scaled == true)
             {
                 this.ErrorPrint("\r\nAlready Scaled");
@@ -221,8 +254,10 @@ namespace PROG6221_POE_Part_1.Classes
                 return;
             }
 
+            //Sitch Statement input 
             int option = GetPositiveIntegerInput("\r\nEnter 1 for half, 2 for double or 3 for triple");
 
+            //Prevents incorrect switch statement choice if input is out of bounds
             if (option > 3)
             {
                 this.ErrorPrint("\r\nInvalid Input");
@@ -230,7 +265,7 @@ namespace PROG6221_POE_Part_1.Classes
                 return;
             }
 
-
+            //Try-catch to handle errors
             try
             {
                 this.ScaleReset = true;
@@ -239,43 +274,66 @@ namespace PROG6221_POE_Part_1.Classes
                 switch (option)
                 {
                     case 1:
+                        //Halves Ingredient Quantities in array
                         foreach (IngredientClass ingredient in IngredientArray)
-                        {
+                        {                            
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 0.5;
 
-                            this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-                            
+                            //------- Part 2 Code -------
+                            /*this.ConversionClassObjectHere.CheckForUpdates(ingredient.IngredientQuantity, 0.5);
+
+                            ingredient.IngredientQuantity = this.ConversionClassObjectHere.SelectedVolume;
+
+                            ingredient.MeasurementUnit = this.ConversionClassObjectHere.SelectedUnit;
+
+                            if (ingredient.IngredientQuantity >= 1000)
+                            {
+                                this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            }
+                            else if (ingredient.IngredientQuantity < 1)
+                            {
+                                this.ConversionClassObjectHere.ConvertQuantitiesDownwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            }
                             if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
                             {
                                 ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
                                 ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
-                            }
-
-                            if (this.ConversionClassObjectHere.IngredientQuantityHere < 1)
-                            {
-                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
-                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
-                            }
+                            }*/
                         }
+
+                        //Sets scale factor to 0.5 for calculations
                         this.ScaleFactor = 0.5;
 
+                        //Setting bool to true to prevent recipe from being scaled again before scale has been reset
                         this.Scaled = true;
                         break;
                     case 2:
+                        //Doubles Ingredient Quantities in array
                         foreach (IngredientClass ingredient in IngredientArray)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 2;
 
-                            this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            //------- Part 2 Code -------
+                            /*if (ingredient.IngredientQuantity >= 1000)
+                            {
+                                this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            }
+                            else if (ingredient.IngredientQuantity < 1)
+                            {
+                                this.ConversionClassObjectHere.ConvertQuantitiesDownwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);                            
+                            }
 
                             if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
                             {
                                 ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
                                 ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
-                            }
+                            }*/
                         }
+
+                        //Sets scale factor to 2 for calculations
                         this.ScaleFactor = 2;
 
+                        //Setting bool to true to prevent recipe from being scaled again before scale has been reset
                         this.Scaled = true;
                         break;
                     case 3:
@@ -283,15 +341,27 @@ namespace PROG6221_POE_Part_1.Classes
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 3;
 
-                            this.ConversionClassObjectHere.ConvertQuantities(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            //------- Part 2 Code -------
+                            /*if (ingredient.IngredientQuantity >= 1000)
+                            {
+                                this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            }
+                            else if (ingredient.IngredientQuantity < 1)
+                            {
+                                this.ConversionClassObjectHere.ConvertQuantitiesDownwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+                            }
 
                             if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
                             {
                                 ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
                                 ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
-                            }
+                            }*/
                         }
+
+                        //Sets scale factor to 3 for calculations
                         this.ScaleFactor = 3;
+
+                        //Setting bool to true to prevent recipe from being scaled again before scale has been reset
                         this.Scaled = true;
                         break;
                     default:
@@ -314,6 +384,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public void ResetQuantity()
         {
+            //If statement to prevent scale from being reset if it hasn't been scale before
             if (this.ScaleReset == false)
             {
                 this.ErrorPrint("\r\nScale Recipe First");
@@ -321,33 +392,39 @@ namespace PROG6221_POE_Part_1.Classes
                 return;
             }
 
+//Try-catch to handle errors
             try
             {
                 this.Scaled = false;
 
                 foreach (IngredientClass ingredient in IngredientArray)
                 {
-                    if (this.ScaleFactor == 0.5)
+                    //Reverses scale operation
+                    ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
+
+                    //------- Part 2 Code -------
+                    /*if (this.ScaleFactor == 0.5)
                     {
                         ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
                     }
-                    else
+                    else if (this.ScaleFactor == 0.5)
                     {
                         ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
                     }
+                    else if (this.ScaleFactor == 0.5)
+                    {
+
+                    }*/
                 }
 
-                //Set the console foreground color to green
+                //Set the console foreground color to green then reset it after displaying string
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Successfully Reset");
-
-                //Reset the console foreground color
+                Console.WriteLine("\r\n     Successfully Reset");
                 Console.ResetColor();                
                 Console.ReadLine();
 
                 //Prevent quantity being reset before being scaled again
                 this.ScaleReset = false;
-
             }
             catch (Exception ex)
             {
@@ -376,11 +453,12 @@ namespace PROG6221_POE_Part_1.Classes
             //Reset the console foreground color
             Console.ResetColor();
 
-            for (int i = 0; i < this.NumberOfIngredients; i++)
+            //Foreach loop to display ingredients
+            foreach (IngredientClass ingredient in this.IngredientArray)
             {
-                ingredientDisplay += "- " + IngredientArray[i].IngredientQuantity.ToString() +
-                    " " + IngredientArray[i].MeasurementUnit +
-                    " of " + IngredientArray[i].IngredientName + "\r\n";
+                ingredientDisplay += "- " + ingredient.IngredientQuantity.ToString() +
+                    " " + ingredient.MeasurementUnit +
+                    " of " + ingredient.IngredientName + "\r\n";
             }
             Console.WriteLine(ingredientDisplay);
 
@@ -395,10 +473,11 @@ namespace PROG6221_POE_Part_1.Classes
             //Reset the console foreground color
             Console.ResetColor();
 
+            //For loop to display the steps with step numbers using int i
             for (int i = 0; i < this.NumberOfSteps; i++)
-            {
+            {                
                 stepDisplay += "Step " + (i + 1) + ": \r\n" +
-                    StepArray[i].StepDescription + "\r\n\r\n";
+                this.StepArray[i].StepDescription + "\r\n\r\n";
             }
             Console.WriteLine(stepDisplay);
             Console.ReadLine();
@@ -416,8 +495,10 @@ namespace PROG6221_POE_Part_1.Classes
         {
             this.ErrorPrint("Are you sure you want to clear this recipe. Warning, this recipe will be permanently deleted!");
 
+            //Switch statement input that prevents incorrect inputs
             int confirm = this.GetPositiveIntegerInput("Enter 1 to continue");
 
+            //If statement that checks that the choice was confirmed, then resets the recipe
             if (confirm == 1)
             {
                 this.NumberOfIngredients = 0;
@@ -430,11 +511,9 @@ namespace PROG6221_POE_Part_1.Classes
 
                 Array.Clear(StepArray, 0, StepArray.Length);
 
-                // Set the console foreground color to red
+                // Set the console foreground color to green then reset it after displaying a string
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\r\n     Successfully Deleted");
-
-                // Reset the console foreground color
                 Console.ResetColor();
                 Console.ReadLine();
             }

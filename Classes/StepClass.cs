@@ -18,7 +18,9 @@ namespace PROG6221_POE_Part_1.Classes
         /// Default Constructor
         /// </summary>
         public StepClass()
-        { }
+        { 
+        
+        }
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -26,6 +28,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void StepInput()
         {
+            //Assigns value to Step Description by calling input method
             this.StepDescription = this.StepDescriptionInputMethod("\r\nPlease enter the step description: ");
         }
 
@@ -37,22 +40,23 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public string StepDescriptionInputMethod(string inputString)
         {
+            //Holds the input
             string input = "";
+
+            //Displays the text
             Console.WriteLine(inputString);
             try
             {
+                //While input is empty, user is prompted for valid input
                 while (string.IsNullOrWhiteSpace(input))
                 {
                     input = Console.ReadLine();
 
                     if (string.IsNullOrWhiteSpace(input))
                     {
-                        // Set the console foreground color to red
+                        // Set the console foreground color to red then reset it after displaying a string
                         Console.ForegroundColor = ConsoleColor.Red;
-
                         Console.WriteLine("Invalid input. Please enter a non-empty value.");
-
-                        // Reset the console foreground color
                         Console.ResetColor();
                     }
                 }

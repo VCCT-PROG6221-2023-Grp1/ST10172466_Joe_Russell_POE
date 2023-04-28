@@ -10,6 +10,8 @@ namespace PROG6221_POE_Part_1.Classes
 {
     internal class IngredientClass
     {
+        public string[] MeasurementUnitArray = { "Millilitre(s)", "Teaspoon(s)", "Tablespoon(s)", "Cups(s)", "Litre(s)", "Gram(s)", "Kilogram(s)", "Other" };
+
         public string IngredientName { get; set; } = string.Empty;
 
         public double IngredientQuantity { get; set; } = 0;
@@ -33,30 +35,42 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void IngredientInput()
         {
-            Console.WriteLine("-----------------------------------------------------------------");
+            // Set the console foreground color to dark red and reset it after displaying a string
+            Console.ForegroundColor = ConsoleColor.DarkRed;          
+            Console.WriteLine("____________________________________________________________________");
+            Console.ResetColor();
+
+            //Assigns value to Ingredient Name by calling input method
             this.IngredientName = this.IngredientNameInputMethod("\r\nPlease enter the Ingredient Name:");
 
-            //
-            int option = GetPositiveIntegerInput("Choose Measurement Unit:" +
-                "\r\n       Enter 1 for Millilitres" +
-                "\r\n       Enter 2 for Grams");
+            // Set the console foreground color to dark cyan and reset it after displaying a string
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("\r\nChoose Measurement Unit:");            
+            Console.ResetColor();
+
+            //Switch statement input to choose Measurement Unit type
+            int option = GetPositiveIntegerInput("\r\n       Enter 1 for Millilitres" +
+                "\r\n       Enter 2 for Grams" +
+                "\r\n       Enter 3 for Other");
 
             //Prevents incorrect switch statement choice
-            if (option > 2)
+            while (option > 3)
             {
-                this.ErrorPrint("\r\nInvalid Input");
-                Console.ReadLine();
-                return;
+                this.ErrorPrint("\r\nInvalid Input. Please enter a valid number.");
+                option = option = GetPositiveIntegerInput(Console.ReadLine());
             }
 
-            //Switch statement to assign variable   
+            //Switch statement to assign Measurement Unit value   
             switch (option)
             {
                 case 1:
-                    this.MeasurementUnit = "Millilitres";
+                    this.MeasurementUnit = "Millilitre(s)";
                     break;
                 case 2:
-                    this.MeasurementUnit = "Grams";
+                    this.MeasurementUnit = "Gram(s)";
+                    break;
+                case 3:
+                    this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter a custom Measurement Unit:"); ;
                     break;
                 default:
                     this.ErrorPrint("Invalid option selected.");
@@ -65,8 +79,6 @@ namespace PROG6221_POE_Part_1.Classes
             }            
 
             this.IngredientQuantity = this.IngredientQuantityInputMethod("\r\nPlease enter the Quantity of the Ingredient:");
-
-            //this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter the Measurement Unit:");
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -81,6 +93,7 @@ namespace PROG6221_POE_Part_1.Classes
             Console.WriteLine(inputString);
             try
             {
+                //While input is empty or while it contains digits or symbols, user is prompted for valid input
                 while (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
                 {
                     input = Console.ReadLine();
@@ -107,12 +120,15 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public double IngredientQuantityInputMethod(string inputString)
         {
+            //Holds the input
             double number = 0;
             bool isValidInput = false;
 
+            //Displays the text
             Console.WriteLine(inputString);
             try
             {
+                //While input is not a double or while it contains 0 or a negative number, user is prompted for valid input
                 while (!isValidInput)
                 {
                     string input = Console.ReadLine();
@@ -143,10 +159,14 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public string MeasurementUnitInputMethod(string inputString)
         {
+            //Holds the input
             string input = "";
+
+            //Displays the text
             Console.WriteLine(inputString);
             try
             {
+                //While input is empty or while it contains digits or symbols, user is prompted for valid input
                 while (string.IsNullOrEmpty(input) || !input.All(char.IsLetter))
                 {
                     input = Console.ReadLine();
@@ -166,14 +186,22 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to input a number that checks that the number is a positive integer and returns it, with error handling
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
         public int GetPositiveIntegerInput(string inputString)
         {
+            //Holds the input
             int number = 0;
             bool isValidInput = false;
 
+            //Displays the text
             Console.WriteLine(inputString);
             try
             {
+                //While input is not a double or while it contains 0 or a negative number, user is prompted for valid input
                 while (!isValidInput)
                 {
                     string input = Console.ReadLine();

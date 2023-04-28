@@ -13,6 +13,9 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public RecipeClass RecipeClassObjectHere = new RecipeClass();
 
+        //------- Part 2 Code -------
+        //public string name { get; set; } = string.Empty;
+
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Default Constructor
@@ -29,11 +32,12 @@ namespace PROG6221_POE_Part_1.Classes
         public void RunWorker()
         {
             RecipeClassObjectHere.RunRecipe();
-            
-            //Part 2 Code:
+
+            //------- Part 2 Code -------
             //CopyObject(RecipeClassObjectHere);
         }
 
+        //------- Part 2 Code -------
         /*public RecipeClass CopyObject(RecipeClass recipeIn)
         {
             var newRecipe = new RecipeClass();

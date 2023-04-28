@@ -13,6 +13,7 @@ namespace PROG6221_POE_Part_1
 
         static void Main(string[] args)
         {
+            //Calling method to run worker method
             worker.RunWorker();
         }
     }
