@@ -151,17 +151,17 @@ namespace PROG6221_POE_Part_1.Classes
             this.RunRecipe();
 
         }
-        
+
         //-----------------------------------------------------------------------------------------------//
-        
+
         //Input Methods
-        
+
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to get the Ingredient Inputs
         /// </summary>
         public void GetRecipeIngredientInput()
-        {                        
+        {
             //Try-catch to handle errors
             try
             {
@@ -178,7 +178,7 @@ namespace PROG6221_POE_Part_1.Classes
                 for (int i = 0; i < this.NumberOfIngredients; i++)
                 {
                     var ingredients = new IngredientClass();
-                    
+
                     //Calling method to input ingredient values
                     IngredientClassObjectHere.IngredientInput();
 
@@ -235,11 +235,11 @@ namespace PROG6221_POE_Part_1.Classes
                 Console.WriteLine(ex.ToString());
             }
         }
-        
+
         //-----------------------------------------------------------------------------------------------//
-        
+
         //Scaling Methods
-        
+
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to scale the Quantities
@@ -276,7 +276,7 @@ namespace PROG6221_POE_Part_1.Classes
                     case 1:
                         //Halves Ingredient Quantities in array
                         foreach (IngredientClass ingredient in IngredientArray)
-                        {                            
+                        {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 0.5;
 
                             //------- Part 2 Code -------
@@ -392,7 +392,7 @@ namespace PROG6221_POE_Part_1.Classes
                 return;
             }
 
-//Try-catch to handle errors
+            //Try-catch to handle errors
             try
             {
                 this.Scaled = false;
@@ -420,7 +420,7 @@ namespace PROG6221_POE_Part_1.Classes
                 //Set the console foreground color to green then reset it after displaying string
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\r\n     Successfully Reset");
-                Console.ResetColor();                
+                Console.ResetColor();
                 Console.ReadLine();
 
                 //Prevent quantity being reset before being scaled again
@@ -430,7 +430,7 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 Console.WriteLine(ex.ToString());
             }
-        }                
+        }
 
         //-----------------------------------------------------------------------------------------------//
 
@@ -475,18 +475,18 @@ namespace PROG6221_POE_Part_1.Classes
 
             //For loop to display the steps with step numbers using int i
             for (int i = 0; i < this.NumberOfSteps; i++)
-            {                
+            {
                 stepDisplay += "Step " + (i + 1) + ": \r\n" +
                 this.StepArray[i].StepDescription + "\r\n\r\n";
             }
             Console.WriteLine(stepDisplay);
             Console.ReadLine();
         }
-        
+
         //-----------------------------------------------------------------------------------------------//
-        
+
         //Reset/Clear Recipe
-        
+
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Method to Reset Recipe
@@ -513,7 +513,7 @@ namespace PROG6221_POE_Part_1.Classes
 
                 // Set the console foreground color to green then reset it after displaying a string
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\r\n     Successfully Deleted");
+                Console.WriteLine("\r\n       Successfully Deleted");
                 Console.ResetColor();
                 Console.ReadLine();
             }
@@ -536,17 +536,23 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public string RecipeNameInputMethod(string inputString)
         {
+            //Holds the input
             string input = "";
+
+            //Displays the text
             Console.WriteLine(inputString);
+
+            //Try-catch to handle errors
             try
             {
+                //While input is empty or while it contains digits or symbols, user is prompted for valid input
                 while (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
                 {
                     input = Console.ReadLine();
 
                     if (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
                     {
-                        this.ErrorPrint("Invalid input. Please enter only letters.");
+                        this.ErrorPrint("Invalid input. Please only enter letters.");
                     }
                 }
             }
@@ -565,12 +571,17 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public int GetPositiveIntegerInput(string inputString)
         {
+            //Holds the input
             int number = 0;
             bool isValidInput = false;
 
+            //Displays the text
             Console.WriteLine(inputString);
+
+            //Try-catch to handle errors
             try
             {
+                //While input is not a double or while it contains 0 or a negative number, user is prompted for valid input
                 while (!isValidInput)
                 {
                     string input = Console.ReadLine();

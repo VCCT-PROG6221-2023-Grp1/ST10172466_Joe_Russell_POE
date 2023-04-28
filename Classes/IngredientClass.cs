@@ -100,7 +100,7 @@ namespace PROG6221_POE_Part_1.Classes
 
                     if (string.IsNullOrWhiteSpace(input) || !input.Replace(" ", "").All(char.IsLetter))
                     {
-                        this.ErrorPrint("Invalid input. Please enter only letters.");
+                        this.ErrorPrint("Invalid input. Please only enter letters.");
                     }
                 }
             }
@@ -173,7 +173,7 @@ namespace PROG6221_POE_Part_1.Classes
 
                     if (string.IsNullOrEmpty(input) || !input.All(char.IsLetter))
                     {
-                        this.ErrorPrint("Invalid input. Please enter only letters.");
+                        this.ErrorPrint("Invalid input. Please only enter letters.");
                     }
                 }
             }
