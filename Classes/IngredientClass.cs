@@ -18,7 +18,9 @@ namespace PROG6221_POE_Part_1.Classes
 
         public string MeasurementUnit { get; set; } = string.Empty;
 
-        public string IngredientType { get; set; } = string.Empty;
+        public double CalorieAmount { get; set; } = 0;
+
+        public string FoodGroup { get; set; } = string.Empty;
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -76,9 +78,16 @@ namespace PROG6221_POE_Part_1.Classes
                     this.ErrorPrint("Invalid option selected.");
                     Console.ReadLine();
                     break;
-            }            
+            }
 
+            //Assigns value to Ingredient Quantity by calling input method
             this.IngredientQuantity = this.IngredientQuantityInputMethod("\r\nPlease enter the Quantity of the Ingredient:");
+
+            //Assigns value to Calory Amount by calling input method
+            this.CalorieAmount = this.CalorieAmountInputMethod("\r\nPlease enter the Amount of Calories the Ingredient contains:");
+
+            //Assigns value to Food Group by calling input method
+            this.FoodGroupInputMethod();
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -183,6 +192,97 @@ namespace PROG6221_POE_Part_1.Classes
             }
 
             return input;
+        }
+
+        //-----------------------------------------------------------------------------------------------//        
+        /// <summary>
+        /// Method to input Calorie Amount, checks that input only contains doubles, with error handling
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public double CalorieAmountInputMethod(string inputString)
+        {
+            //Holds the input
+            double number = 0;
+            bool isValidInput = false;
+
+            //Displays the text
+            Console.WriteLine(inputString);
+            try
+            {
+                //While input is not a double or while it contains 0 or a negative number, user is prompted for valid input
+                while (!isValidInput)
+                {
+                    string input = Console.ReadLine();
+
+                    if (!double.TryParse(input, out number) || input.Contains("-") || number == 0)
+                    {
+                        this.ErrorPrint("Invalid input. Please enter a valid number.");
+                    }
+                    else
+                    {
+                        isValidInput = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return number;
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to input Ingredient Food Group, checks that input is not null and only contains letters, with error handling
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public void FoodGroupInputMethod()
+        {
+            // Set the console foreground color to dark cyan and reset it after displaying a string
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("\r\nChoose Food Group:");
+            Console.ResetColor();
+
+            //Switch statement input to choose Measurement Unit type
+            int option = GetPositiveIntegerInput("\r\n       Enter 1 for Fruits" +
+                "\r\n       Enter 2 for Vegetables" +
+                "\r\n       Enter 3 for Grains" +
+                "\r\n       Enter 4 for Protein Foods" +
+                "\r\n       Enter 5 for Dairy");
+
+            //Prevents incorrect switch statement choice
+            while (option > 5)
+            {
+                this.ErrorPrint("\r\nInvalid Input. Please enter a valid number.");
+                option = option = GetPositiveIntegerInput(Console.ReadLine());
+            }
+
+            //Switch statement to assign Food Group value   
+            switch (option)
+            {
+                case 1:
+                    this.FoodGroup = "Fruits";
+                    break;
+                case 2:
+                    this.FoodGroup = "Vegetables";
+                    break;
+                case 3:
+                    this.FoodGroup = "Grains";
+                    break;
+                case 4:
+                    this.FoodGroup = "Protein Foods";
+                    break;
+                case 5:
+                    this.FoodGroup = "Dairy";
+                    break;
+                default:
+                    this.ErrorPrint("Invalid option selected.");
+                    Console.ReadLine();
+                    break;
+            }
         }
 
         //-----------------------------------------------------------------------------------------------//

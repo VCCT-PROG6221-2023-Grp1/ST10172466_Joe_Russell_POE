@@ -11,12 +11,14 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Ingredient Class Array
         /// </summary>
-        IngredientClass[] IngredientArray;
+        //IngredientClass[] IngredientArray;
+        List<IngredientClass> IngredientList = new List<IngredientClass>();
 
         /// <summary>
         /// Step Class Array
         /// </summary>
-        StepClass[] StepArray;
+        //StepClass[] StepArray;
+        List<StepClass> StepList = new List<StepClass>();
 
         /// <summary>
         /// Local Ingredient Class Object
@@ -32,7 +34,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Local Conversion Class Object
         /// </summary>
-        //public ConversionClass ConversionClassObjectHere = new ConversionClass();
+        //public ConversionClass ConversionClassObjectHere = new ConversionClass();        
 
         /// <summary>
         /// String that holds the Recipe Name
@@ -68,6 +70,11 @@ namespace PROG6221_POE_Part_1.Classes
         /// Bool that checks whether a recipe's scaling has been reset or not
         /// </summary>
         public bool ScaleReset { get; set; } = false;
+
+        /// <summary>
+        /// Double that holds the total amount od calories in a recipe
+        /// </summary>
+        public double TotalCalories { get; set; } = 0;
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -172,7 +179,7 @@ namespace PROG6221_POE_Part_1.Classes
                 this.NumberOfIngredients = GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
 
                 //Initialises Ingredient Array
-                this.IngredientArray = new IngredientClass[NumberOfIngredients];
+                //this.IngredientArray = new IngredientClass[NumberOfIngredients];
 
                 //For loop to populate Ingredient Array
                 for (int i = 0; i < this.NumberOfIngredients; i++)
@@ -186,7 +193,10 @@ namespace PROG6221_POE_Part_1.Classes
                     ingredients.IngredientName = this.IngredientClassObjectHere.IngredientName;
                     ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
                     ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
-                    this.IngredientArray[i] = ingredients;
+                    ingredients.CalorieAmount = this.IngredientClassObjectHere.CalorieAmount;
+                    this.TotalCalories += ingredients.CalorieAmount;
+                    ingredients.FoodGroup = this.IngredientClassObjectHere.FoodGroup;
+                    this.IngredientList.Add(ingredients);
                 }
                 //Setting bool to true to prevent recipe from being entered again before being reset
                 this.RecipeEntered = true;
@@ -215,7 +225,7 @@ namespace PROG6221_POE_Part_1.Classes
                 this.NumberOfSteps = GetPositiveIntegerInput("\r\nEnter Number of Steps: ");
 
                 //Initialises Step Array
-                StepArray = new StepClass[this.NumberOfSteps];
+                //this.StepArray = new StepClass[this.NumberOfSteps];
 
                 //For loop to populate Step Array
                 for (int i = 0; i < this.NumberOfSteps; i++)
@@ -227,7 +237,7 @@ namespace PROG6221_POE_Part_1.Classes
 
                     //Assigning values to Step Array
                     steps.StepDescription = this.StepClassObjectHere.StepDescription;
-                    StepArray[i] = steps;
+                    StepList.Add(steps);
                 }
             }
             catch (System.Exception ex)
@@ -275,7 +285,7 @@ namespace PROG6221_POE_Part_1.Classes
                 {
                     case 1:
                         //Halves Ingredient Quantities in array
-                        foreach (IngredientClass ingredient in IngredientArray)
+                        foreach (IngredientClass ingredient in IngredientList)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 0.5;
 
@@ -309,7 +319,7 @@ namespace PROG6221_POE_Part_1.Classes
                         break;
                     case 2:
                         //Doubles Ingredient Quantities in array
-                        foreach (IngredientClass ingredient in IngredientArray)
+                        foreach (IngredientClass ingredient in IngredientList)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 2;
 
@@ -337,7 +347,7 @@ namespace PROG6221_POE_Part_1.Classes
                         this.Scaled = true;
                         break;
                     case 3:
-                        foreach (IngredientClass ingredient in IngredientArray)
+                        foreach (IngredientClass ingredient in IngredientList)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 3;
 
@@ -397,7 +407,7 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 this.Scaled = false;
 
-                foreach (IngredientClass ingredient in IngredientArray)
+                foreach (IngredientClass ingredient in IngredientList)
                 {
                     //Reverses scale operation
                     ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
@@ -454,13 +464,25 @@ namespace PROG6221_POE_Part_1.Classes
             Console.ResetColor();
 
             //Foreach loop to display ingredients
-            foreach (IngredientClass ingredient in this.IngredientArray)
+            foreach (IngredientClass ingredient in this.IngredientList)
             {
                 ingredientDisplay += "- " + ingredient.IngredientQuantity.ToString() +
                     " " + ingredient.MeasurementUnit +
-                    " of " + ingredient.IngredientName + "\r\n";
+                    " of " + ingredient.IngredientName + 
+                    ", " + ingredient.CalorieAmount.ToString() + " Calorie(s)" +
+                    ", " + ingredient.FoodGroup + " Food Group" + 
+                    "\r\n";
             }
             Console.WriteLine(ingredientDisplay);
+
+            //Displays total calories of recipe
+            Console.WriteLine("Total Calories: " + this.TotalCalories);
+
+            //
+            if(this.TotalCalories > 300)
+            {
+                ErrorPrint("\r\nWarning!!! Excessive Calories detected!");
+            }
 
             //Set the console foreground color to green
             Console.ForegroundColor = ConsoleColor.Green;
@@ -477,7 +499,7 @@ namespace PROG6221_POE_Part_1.Classes
             for (int i = 0; i < this.NumberOfSteps; i++)
             {
                 stepDisplay += "Step " + (i + 1) + ": \r\n" +
-                this.StepArray[i].StepDescription + "\r\n\r\n";
+                this.StepList[i].StepDescription + "\r\n\r\n";
             }
             Console.WriteLine(stepDisplay);
             Console.ReadLine();
@@ -506,10 +528,17 @@ namespace PROG6221_POE_Part_1.Classes
                 this.RecipeName = "";
                 this.RecipeEntered = false;
                 this.Scaled = false;
+                this.TotalCalories = 0;
 
-                Array.Clear(IngredientArray, 0, IngredientArray.Length);
+                IngredientList.Clear();
+                IngredientList.TrimExcess();
 
-                Array.Clear(StepArray, 0, StepArray.Length);
+                //Array.Clear(IngredientArray, 0, IngredientArray.Length);
+
+                StepList.Clear();
+                StepList.TrimExcess();
+
+                //Array.Clear(StepArray, 0, StepArray.Length);
 
                 // Set the console foreground color to green then reset it after displaying a string
                 Console.ForegroundColor = ConsoleColor.Green;
