@@ -52,7 +52,7 @@ namespace PROG6221_POE_Part_1.Classes
         public void RunWorker()
         {
             RecipeClassObjectHere.RunRecipe();
-
+            Console.WriteLine(RecipeClassObjectHere.RecipeName);
             //------- Part 2 Code -------
             //CopyObject(RecipeClassObjectHere);
         }
