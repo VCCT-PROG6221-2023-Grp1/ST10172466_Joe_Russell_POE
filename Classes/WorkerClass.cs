@@ -30,9 +30,13 @@ namespace PROG6221_POE_Part_1.Classes
         4. The user can choose which recipe to display from the list.
 
 
+        Issues:
+            - Recipe Name being overwritten by subsequent entries
+            - All recipe details displayed at once
+             
+
         !!Use This Somewhere!
         public (double, double, string) dasd
-
         return (0, 1, "dsa")
         */
 
@@ -161,7 +165,7 @@ namespace PROG6221_POE_Part_1.Classes
         //-----------------------------------------------------------------------------------------------//
 
         public void RecipeInput()
-        {
+        {            
             var recipe = new RecipeClass();
 
             //Assigns value to Number of Ingredients by calling input method
