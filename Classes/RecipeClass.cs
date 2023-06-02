@@ -12,13 +12,13 @@ namespace PROG6221_POE_Part_1.Classes
         /// Ingredient Class Array
         /// </summary>
         //IngredientClass[] IngredientArray;
-        List<IngredientClass> IngredientList = new List<IngredientClass>();
+        public List<IngredientClass> IngredientList = new List<IngredientClass>();
 
         /// <summary>
         /// Step Class Array
         /// </summary>
         //StepClass[] StepArray;
-        List<StepClass> StepList = new List<StepClass>();
+        public List<StepClass> StepList = new List<StepClass>();
 
         /// <summary>
         /// Local Ingredient Class Object
@@ -29,6 +29,15 @@ namespace PROG6221_POE_Part_1.Classes
         /// Local Step Class Object
         /// </summary>
         public StepClass StepClassObjectHere = new StepClass();
+
+
+        /// <summary>
+        /// Delegate used to calculate calories
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public delegate double Calculate(double x, double y);
 
         //------- Part 2 Code -------
         /// <summary>
@@ -173,13 +182,13 @@ namespace PROG6221_POE_Part_1.Classes
             try
             {
                 //Assigns value to Recipe Name by calling input method
-                this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
+                //this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
 
                 //Assigns value to Number of Ingredients by calling input method
-                this.NumberOfIngredients = GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
+                this.NumberOfIngredients = this.GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
 
-                //Initialises Ingredient Array
-                //this.IngredientArray = new IngredientClass[NumberOfIngredients];
+                //Creating delegate instance and assign method to it
+                Calculate addDelegate = new Calculate(Add);
 
                 //For loop to populate Ingredient Array
                 for (int i = 0; i < this.NumberOfIngredients; i++)
@@ -189,12 +198,12 @@ namespace PROG6221_POE_Part_1.Classes
                     //Calling method to input ingredient values
                     IngredientClassObjectHere.IngredientInput();
 
-                    //Assigning values to Ingredient Array
+                    //Assigning values to Ingredient List
                     ingredients.IngredientName = this.IngredientClassObjectHere.IngredientName;
                     ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
                     ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
                     ingredients.CalorieAmount = this.IngredientClassObjectHere.CalorieAmount;
-                    this.TotalCalories += ingredients.CalorieAmount;
+                    this.TotalCalories = addDelegate(this.TotalCalories, ingredients.CalorieAmount);
                     ingredients.FoodGroup = this.IngredientClassObjectHere.FoodGroup;
                     this.IngredientList.Add(ingredients);
                 }
@@ -205,6 +214,18 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 Console.WriteLine(ex.ToString());
             }
+        }
+
+//-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Delegate method
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public double Add(double x, double y)
+        {
+            return x + y;
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -235,7 +256,7 @@ namespace PROG6221_POE_Part_1.Classes
                     //Calling method to input step values
                     StepClassObjectHere.StepInput();
 
-                    //Assigning values to Step Array
+                    //Assigning values to Step List
                     steps.StepDescription = this.StepClassObjectHere.StepDescription;
                     StepList.Add(steps);
                 }
