@@ -253,7 +253,16 @@ namespace PROG6221_POE_Part_1.Classes
             //
             if (recipe.TotalCalories > 300)
             {
-                recipe.ErrorPrint("\r\nWarning!!! Excessive Calories detected!");
+                recipe.ErrorPrint("\r\nWarning!!! Excessive Calories detected!\r\n" +
+                    "\r\nCalories are the unit used to determine the amount of energy in food or drinks.\r\n" +
+                    "Excessive calorie consumption can lead to increased weight gain, which comes with a lot of risks.\r\n" +                    
+                    "Extra calories places your heart at risk.\r\n" +
+                    "It can lead to atherosclerosis. " +
+                    "Which causes the stiffening of the artery wall, this increases the risk of having a heart attack or stroke.\r\n" +
+                    "\r\nBeing overweight heightens the risk for fatty liver disease, certain cancers and high blood pressure.\r\n" +
+                    "It also increases the pressure on your joints, raising the risk of osteoarthritis.\r\n" +
+                    "The extra fat surrounding your neck can cause breathing problems and lead to sleep apnea, " +
+                    "a condition in which you stop breathing temporarily while asleep.");
             }
 
             //Set the console foreground color to green
