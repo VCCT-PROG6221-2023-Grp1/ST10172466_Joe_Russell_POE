@@ -9,13 +9,12 @@ namespace PROG6221_POE_Part_1.Classes
     internal class RecipeClass
     {
         /// <summary>
-        /// Ingredient Class Array
+        /// Ingredient Class List
         /// </summary>
-        //IngredientClass[] IngredientArray;
         public List<IngredientClass> IngredientList = new List<IngredientClass>();
 
         /// <summary>
-        /// Step Class Array
+        /// Step Class List
         /// </summary>
         //StepClass[] StepArray;
         public List<StepClass> StepList = new List<StepClass>();
@@ -99,7 +98,7 @@ namespace PROG6221_POE_Part_1.Classes
             this.Format();
 
             //Switch statement input
-            int option = GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
+            int option = this.GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
                 "\n     Enter 2 to Reset Quantity Values" +
                 "\n     Enter 3 to View Recipe" +
                 "\n     Enter 4 to Clear All Values" +
@@ -131,7 +130,7 @@ namespace PROG6221_POE_Part_1.Classes
                     break;
                 case 4:
                     //Runs delete recipe method
-                    this.ClearRecipe();
+                    //this.ClearRecipe();
                     break;
                 case 5:
                     //Exits application
@@ -162,10 +161,7 @@ namespace PROG6221_POE_Part_1.Classes
             try
             {
                 //Assigns value to Recipe Name by calling input method
-                this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
-
-                //Assigns value to Number of Ingredients by calling input method
-                this.NumberOfIngredients = this.GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
+                this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");                
 
                 this.GetRecipeIngredientInput();
                 this.GetRecipeStepInput();
@@ -185,12 +181,15 @@ namespace PROG6221_POE_Part_1.Classes
             //Try-catch to handle errors
             try
             {
-                //Creating delegate instance and assign method to it
+                //Creating delegate instance and assigning method to it
                 Calculate addDelegate = new Calculate(Add);
 
+                //Assigns value to Number of Ingredients by calling input method
+                //this.NumberOfIngredients = this.GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
+
                 //For loop to populate Ingredient Array
-                for (int i = 0; i < this.NumberOfIngredients; i++)
-                {
+                //for (int i = 0; i < this.NumberOfIngredients; i++)
+                //{
                     var ingredients = new IngredientClass();
 
                     //Calling method to input ingredient values
@@ -201,10 +200,14 @@ namespace PROG6221_POE_Part_1.Classes
                     ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
                     ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
                     ingredients.CalorieAmount = this.IngredientClassObjectHere.CalorieAmount;
-                    this.TotalCalories = addDelegate(this.TotalCalories, ingredients.CalorieAmount);
                     ingredients.FoodGroup = this.IngredientClassObjectHere.FoodGroup;
+
+                    //Delegate that calculates total calories
+                    this.TotalCalories = addDelegate(this.TotalCalories, ingredients.CalorieAmount);
+
+
                     this.IngredientList.Add(ingredients);
-                }
+                //}
             }
             catch (Exception ex)
             {
@@ -214,7 +217,7 @@ namespace PROG6221_POE_Part_1.Classes
 
 //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// Delegate method
+        /// Delegate Method
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -239,14 +242,11 @@ namespace PROG6221_POE_Part_1.Classes
                 Console.ResetColor();
 
                 //Assigns value to Number of Steps by calling input method
-                this.NumberOfSteps = GetPositiveIntegerInput("\r\nEnter Number of Steps: ");
-
-                //Initialises Step Array
-                //this.StepArray = new StepClass[this.NumberOfSteps];
+                //this.NumberOfSteps = GetPositiveIntegerInput("\r\nEnter Number of Steps: ");
 
                 //For loop to populate Step Array
-                for (int i = 0; i < this.NumberOfSteps; i++)
-                {
+                //for (int i = 0; i < this.NumberOfSteps; i++)
+                //{
                     var steps = new StepClass();
 
                     //Calling method to input step values
@@ -255,7 +255,7 @@ namespace PROG6221_POE_Part_1.Classes
                     //Assigning values to Step List
                     steps.StepDescription = this.StepClassObjectHere.StepDescription;
                     StepList.Add(steps);
-                }
+                //}
             }
             catch (System.Exception ex)
             {
@@ -530,7 +530,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Method to Reset Recipe
         /// </summary>
-        public void ClearRecipe()
+        /*public void ClearRecipe()
         {
             this.ErrorPrint("Are you sure you want to clear this recipe. Warning, this recipe will be permanently deleted!");
 
@@ -567,7 +567,7 @@ namespace PROG6221_POE_Part_1.Classes
                 this.ErrorPrint("\r\n       Cancelled");
                 Console.ReadLine();
             }
-        }
+        }*/
 
         //-----------------------------------------------------------------------------------------------//
 

@@ -10,8 +10,6 @@ namespace PROG6221_POE_Part_1.Classes
 {
     internal class IngredientClass
     {
-        public string[] MeasurementUnitArray = { "Millilitre(s)", "Teaspoon(s)", "Tablespoon(s)", "Cups(s)", "Litre(s)", "Gram(s)", "Kilogram(s)", "Other" };
-
         public string IngredientName { get; set; } = string.Empty;
 
         public double IngredientQuantity { get; set; } = 0;
