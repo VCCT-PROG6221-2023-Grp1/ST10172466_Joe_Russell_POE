@@ -66,11 +66,6 @@ namespace PROG6221_POE_Part_1.Classes
         public double ScaleFactor { get; set; } = 0;
 
         /// <summary>
-        /// Bool that checks whether a recipe has been entered or not
-        /// </summary>
-        public bool RecipeEntered { get; set; } = false;
-
-        /// <summary>
         /// Bool that checks whether a recipe has been scaled or not
         /// </summary>
         public bool Scaled { get; set; } = false;
@@ -104,12 +99,11 @@ namespace PROG6221_POE_Part_1.Classes
             this.Format();
 
             //Switch statement input
-            int option = GetPositiveIntegerInput("     Enter 1 to Enter Recipe Details" +
-                "\n     Enter 2 to Scale Recipe Quantity Values" +
-                "\n     Enter 3 to Reset Quantity Values" +
-                "\n     Enter 4 to View Recipe" +
-                "\n     Enter 5 to Clear All Values" +
-                "\n     Enter 6 to Exit");
+            int option = GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
+                "\n     Enter 2 to Reset Quantity Values" +
+                "\n     Enter 3 to View Recipe" +
+                "\n     Enter 4 to Clear All Values" +
+                "\n     Enter 5 to Exit");
 
             //Prevents incorrect switch statement choice if there is no recipe
             if (this.RecipeName.Equals("") && option > 1 && option < 6)
@@ -124,35 +118,22 @@ namespace PROG6221_POE_Part_1.Classes
             switch (option)
             {
                 case 1:
-                    //Runs input methods if recipe is empty
-                    if (this.RecipeEntered == false)
-                    {
-                        this.GetRecipeIngredientInput();
-                        this.GetRecipeStepInput();
-                    }
-                    else
-                    {
-                        this.ErrorPrint("\r\nAlready Entered Recipe");
-                        Console.ReadLine();
-                    }
-                    break;
-                case 2:
                     //Runs scaling method
                     this.ScaleRecipe();
                     break;
-                case 3:
+                case 2:
                     //Runs scale Reset method
                     this.ResetQuantity();
                     break;
-                case 4:
+                case 3:
                     //Runs display method
                     this.DisplayRecipe();
                     break;
-                case 5:
+                case 4:
                     //Runs delete recipe method
                     this.ClearRecipe();
                     break;
-                case 6:
+                case 5:
                     //Exits application
                     Environment.Exit(0);
                     break;
@@ -174,6 +155,29 @@ namespace PROG6221_POE_Part_1.Classes
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
+        /// Method to get Recipe Inputs
+        /// </summary>
+        public void RecipeInput()
+        {
+            try
+            {
+                //Assigns value to Recipe Name by calling input method
+                this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
+
+                //Assigns value to Number of Ingredients by calling input method
+                this.NumberOfIngredients = this.GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
+
+                this.GetRecipeIngredientInput();
+                this.GetRecipeStepInput();
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
         /// Method to get the Ingredient Inputs
         /// </summary>
         public void GetRecipeIngredientInput()
@@ -181,12 +185,6 @@ namespace PROG6221_POE_Part_1.Classes
             //Try-catch to handle errors
             try
             {
-                //Assigns value to Recipe Name by calling input method
-                //this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");
-
-                //Assigns value to Number of Ingredients by calling input method
-                this.NumberOfIngredients = this.GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
-
                 //Creating delegate instance and assign method to it
                 Calculate addDelegate = new Calculate(Add);
 
@@ -207,8 +205,6 @@ namespace PROG6221_POE_Part_1.Classes
                     ingredients.FoodGroup = this.IngredientClassObjectHere.FoodGroup;
                     this.IngredientList.Add(ingredients);
                 }
-                //Setting bool to true to prevent recipe from being entered again before being reset
-                this.RecipeEntered = true;
             }
             catch (Exception ex)
             {
@@ -547,7 +543,6 @@ namespace PROG6221_POE_Part_1.Classes
                 this.NumberOfIngredients = 0;
                 this.NumberOfSteps = 0;
                 this.RecipeName = "";
-                this.RecipeEntered = false;
                 this.Scaled = false;
                 this.TotalCalories = 0;
 
