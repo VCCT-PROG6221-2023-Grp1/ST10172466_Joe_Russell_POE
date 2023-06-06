@@ -6,29 +6,28 @@ using System.Threading.Tasks;
 
 namespace PROG6221_POE_Part_1.Classes
 {
-    internal class RecipeClass
+    public class RecipeClass
     {
         /// <summary>
         /// Ingredient Class List
         /// </summary>
-        public List<IngredientClass> IngredientList = new List<IngredientClass>();
+        private List<IngredientClass> IngredientList = new List<IngredientClass>();
 
         /// <summary>
         /// Step Class List
         /// </summary>
         //StepClass[] StepArray;
-        public List<StepClass> StepList = new List<StepClass>();
+        private List<StepClass> StepList = new List<StepClass>();
 
         /// <summary>
         /// Local Ingredient Class Object
         /// </summary>
-        public IngredientClass IngredientClassObjectHere = new IngredientClass();
+        private IngredientClass IngredientClassObjectHere = new IngredientClass();
 
         /// <summary>
         /// Local Step Class Object
         /// </summary>
-        public StepClass StepClassObjectHere = new StepClass();
-
+        private StepClass StepClassObjectHere = new StepClass();
 
         /// <summary>
         /// Delegate used to calculate calories
