@@ -45,6 +45,7 @@ namespace PROG6221_POE_Part_1.Classes
 
             //Displays the text
             Console.WriteLine(inputString);
+
             try
             {
                 //While input is empty, user is prompted for valid input

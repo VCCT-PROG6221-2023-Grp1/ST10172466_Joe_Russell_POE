@@ -25,9 +25,9 @@ namespace PROG6221_POE_Part_1.Classes
 
 
         /*------- Part 2 Code -------        
-        1. The user shall be able to enter an unlimited number of recipes.
+        1. The user shall be able to enter an unlimited number of RecipeList.
         2. The user shall be able to enter a name for each recipe. 
-        3. The software shall display a list of all the recipes to the user in alphabetical order by name. 
+        3. The software shall display a list of all the RecipeList to the user in alphabetical order by name. 
         4. The user can choose which recipe to display from the list.
 
 
@@ -56,8 +56,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void RunWorker()
         {
-            this.RunMenu();
-            //this.MenuDisplay();
+            this.MainMenu();
         }
         /*
         //-----------------------------------------------------------------------------------------------//
@@ -282,7 +281,7 @@ namespace PROG6221_POE_Part_1.Classes
         {
             if (RecipeList.Count == 0)
             {
-                Console.WriteLine("No recipes found.");
+                Console.WriteLine("No RecipeList found.");
                 return;
             }
 
@@ -370,11 +369,8 @@ namespace PROG6221_POE_Part_1.Classes
     }
 }*/
 
-        private List<RecipeClass> recipes = new List<RecipeClass>();
-
-
         //-----------------------------------------------------------------------------------------------//
-        public void RunMenu()
+        public void MainMenu()
         {
             //Format Menu
             RecipeClassObjectHere.Format();
@@ -383,6 +379,13 @@ namespace PROG6221_POE_Part_1.Classes
             int option = RecipeClassObjectHere.GetPositiveIntegerInput("     Enter 1 to Add Recipe" +
                 "\n     Enter 2 to Search/View More Options for Recipe" +
                 "\n     Enter 3 to Exit");
+
+            //Prevents incorrect switch statement choice
+            while (option > 3)
+            {
+                RecipeClassObjectHere.ErrorPrint("\r\nInvalid Input. Please enter a valid number.");
+                option = RecipeClassObjectHere.GetPositiveIntegerInput(Console.ReadLine());
+            }
 
             switch (option)
             {
@@ -400,13 +403,13 @@ namespace PROG6221_POE_Part_1.Classes
             }
 
             Console.Clear();
-            this.RunMenu();
+            this.MainMenu();
         }
 
         //-----------------------------------------------------------------------------------------------//
-        
+
         //Add Recipe to List
-        
+
         //-----------------------------------------------------------------------------------------------//
         private void AddRecipe()
         {
@@ -415,38 +418,26 @@ namespace PROG6221_POE_Part_1.Classes
             Console.Write("Enter recipe name: ");
             recipe.RecipeName = Console.ReadLine();
 
-            Console.Write("Enter number of ingredients: ");
-            int numberOfIngredients;
-            if (int.TryParse(Console.ReadLine(), out numberOfIngredients))
+            //Ingredient Input
+            int numberOfIngredients = RecipeClassObjectHere.GetPositiveIntegerInput("Enter number of ingredients: ");
+
+            for (int i = 0; i < numberOfIngredients; i++)
             {
-                for (int i = 0; i < numberOfIngredients; i++)
-                {
-                    recipe.GetRecipeIngredientInput();
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid number of ingredients. Recipe not added.");
-                return;
+                recipe.GetRecipeIngredientInput();
             }
 
-            Console.Write("Enter number of steps: ");
-            int numberOfSteps;
-            if (int.TryParse(Console.ReadLine(), out numberOfSteps))
+
+            //Step Input
+            int numberOfSteps = RecipeClassObjectHere.GetPositiveIntegerInput("Enter number of steps: ");
+
+            for (int i = 0; i < numberOfSteps; i++)
             {
-                for (int i = 0; i < numberOfSteps; i++)
-                {
-                    recipe.GetRecipeStepInput();
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid number of steps. Recipe not added.");
-                return;
+                recipe.GetRecipeStepInput();
             }
 
-            recipes.Add(recipe);
-            Console.WriteLine("Recipe added successfully.");
+            RecipeList.Add(recipe);
+            Console.WriteLine("Recipe added successfully");
+
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -456,80 +447,89 @@ namespace PROG6221_POE_Part_1.Classes
         //-----------------------------------------------------------------------------------------------//
         private void SearchRecipe()
         {
-            if (recipes.Count == 0)
+            if (RecipeList.Count == 0)
             {
-                Console.WriteLine("No recipes found.");
+                Console.WriteLine("No Recipes Found.");
                 return;
             }
 
+            //Print list of recipe names
             Console.WriteLine("===== Recipes =====");
-            foreach (var recipe in recipes.OrderBy(r => r.RecipeName))
+            foreach (var recipe in RecipeList.OrderBy(r => r.RecipeName))
             {
                 Console.WriteLine(recipe.RecipeName);
             }
             Console.WriteLine("===================");
 
+            //Search Input
             Console.Write("Enter the name of the recipe you want to select: ");
             string recipeName = Console.ReadLine();
 
-            RecipeClass selectedRecipe = recipes.FirstOrDefault(r => r.RecipeName.Equals(recipeName, StringComparison.OrdinalIgnoreCase));
+            //Search
+            RecipeClass selectedRecipe = RecipeList.FirstOrDefault(r => r.RecipeName.Equals(recipeName, StringComparison.OrdinalIgnoreCase));
+
+            //Error Handling
             if (selectedRecipe != null)
             {
-                ShowRecipeMenu(selectedRecipe);
+                //Display recipe
+                selectedRecipe.DisplayRecipe();
+
+                Console.Clear();
+                
+                //Show New Menu
+                RecipeMenu(selectedRecipe);
             }
             else
             {
                 Console.WriteLine("Recipe not found.");
             }
+
+            Console.Clear();            
         }
+
         //-----------------------------------------------------------------------------------------------//
 
         //Show Search Recipe Menu
 
         //-----------------------------------------------------------------------------------------------//
-        private void ShowRecipeMenu(RecipeClass recipe)
+        private void RecipeMenu(RecipeClass recipe)
         {
-            while (true)
+            //Format Menu
+            RecipeClassObjectHere.Format();
+
+            //Switch statement input
+            int option = RecipeClassObjectHere.GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
+                "\n     Enter 2 to Reset Quantity Values" +
+                "\n     Enter 3 to View Recipe" +
+                "\n     Enter 4 to Delete Recipe" +
+                "\n     Enter 5 to Return to Main Menu");
+
+            switch (option)
             {
-                //Format Menu
-                RecipeClassObjectHere.Format();
-
-                //Switch statement input
-                int option = RecipeClassObjectHere.GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
-                    "\n     Enter 2 to Reset Quantity Values" +
-                    "\n     Enter 3 to View Recipe" +
-                    "\n     Enter 4 to Delete Recipe" +
-                    "\n     Enter 5 to Return to Main Menu");
-
-                if (int.TryParse(Console.ReadLine(), out option))
-                {
-                    switch (option)
-                    {
-                        case 1:
-                            recipe.ScaleRecipe();
-                            break;
-                        case 2:
-                            recipe.ResetQuantity();
-                            break;
-                        case 3:
-                            recipe.DisplayRecipe();
-                            break;
-                        case 4:
-                            //Deletes Recipe
-                            DeleteRecipe(recipe);
-                            return;
-                        case 5:
-                            return;
-                        default:
-                            Console.WriteLine("Invalid choice. Please try again.");
-                            break;
-                    }
-                }
-                else
-                {
+                case 1:
+                    //Scales quantity values
+                    recipe.ScaleRecipe();
+                    break;
+                case 2:
+                    //Resets quantity values to original
+                    recipe.ResetQuantity();
+                    break;
+                case 3:
+                    //Displays Recipe
+                    recipe.DisplayRecipe();
+                    break;
+                case 4:
+                    //Deletes Recipe
+                    DeleteRecipe(recipe);
+                    return;
+                case 5:
+                    return;
+                default:
                     Console.WriteLine("Invalid choice. Please try again.");
-                }
+                    break;
             }
+            Console.Clear();
+            this.RecipeMenu(recipe);
         }
         //-----------------------------------------------------------------------------------------------//
 
@@ -550,7 +550,7 @@ namespace PROG6221_POE_Part_1.Classes
             //If statement that checks that the choice was confirmed, then resets the recipe
             if (confirm == 1)
             {
-                recipes.Remove(recipe);
+                RecipeList.Remove(recipe);
 
                 // Set the console foreground color to green then reset it after displaying a string
                 Console.ForegroundColor = ConsoleColor.Green;

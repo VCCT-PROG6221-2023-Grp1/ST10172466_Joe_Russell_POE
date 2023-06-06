@@ -57,7 +57,7 @@ namespace PROG6221_POE_Part_1.Classes
             while (option > 3)
             {
                 this.ErrorPrint("\r\nInvalid Input. Please enter a valid number.");
-                option = option = GetPositiveIntegerInput(Console.ReadLine());
+                option = this.GetPositiveIntegerInput(Console.ReadLine());
             }
 
             //Switch statement to assign Measurement Unit value   
@@ -255,7 +255,7 @@ namespace PROG6221_POE_Part_1.Classes
             while (option > 5)
             {
                 this.ErrorPrint("\r\nInvalid Input. Please enter a valid number.");
-                option = option = GetPositiveIntegerInput(Console.ReadLine());
+                option = this.GetPositiveIntegerInput(Console.ReadLine());
             }
 
             //Switch statement to assign Food Group value   

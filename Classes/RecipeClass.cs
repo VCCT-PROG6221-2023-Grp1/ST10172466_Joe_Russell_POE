@@ -281,7 +281,7 @@ namespace PROG6221_POE_Part_1.Classes
                 return;
             }
 
-            //Sitch Statement input 
+            //Switch Statement input 
             int option = GetPositiveIntegerInput("\r\nEnter 1 for half, 2 for double or 3 for triple");
 
             //Prevents incorrect switch statement choice if input is out of bounds
@@ -495,10 +495,19 @@ namespace PROG6221_POE_Part_1.Classes
             //Displays total calories of recipe
             Console.WriteLine("Total Calories: " + this.TotalCalories);
 
-            //
+            //Prints a warning if total calories exceeds 300
             if(this.TotalCalories > 300)
             {
-                ErrorPrint("\r\nWarning!!! Excessive Calories detected!");
+                this.ErrorPrint("\r\nWarning!!! Excessive Calories detected!\r\n" +
+                    "\r\nCalories are the unit used to determine the amount of energy in food or drinks.\r\n" +
+                    "Excessive calorie consumption can lead to increased weight gain, which comes with a lot of risks.\r\n" +
+                    "Extra calories places your heart at risk.\r\n" +
+                    "It can lead to atherosclerosis. " +
+                    "Which causes the stiffening of the artery wall, \r\nthis increases the risk of having a heart attack or stroke.\r\n" +
+                    "\r\nBeing overweight heightens the risk for fatty liver disease, certain cancers and high blood pressure.\r\n" +
+                    "It also increases the pressure on your joints, raising the risk of osteoarthritis.\r\n" +
+                    "The extra fat surrounding your neck can cause breathing problems and lead to sleep apnea, \r\n" +
+                    "a condition in which you stop breathing temporarily while asleep.");
             }
 
             //Set the console foreground color to green
@@ -512,63 +521,20 @@ namespace PROG6221_POE_Part_1.Classes
             //Reset the console foreground color
             Console.ResetColor();
 
-            //For loop to display the steps with step numbers using int i
-            for (int i = 0; i < this.NumberOfSteps; i++)
+            //Int that holds the step num
+            int i = 1;
+
+            //Foreach loop to display the steps with step numbers using int i
+            foreach (StepClass step in this.StepList)
             {
-                stepDisplay += "Step " + (i + 1) + ": \r\n" +
-                this.StepList[i].StepDescription + "\r\n\r\n";
+                stepDisplay += "Step " + (i++) + ": \r\n" +
+                step.StepDescription + "\r\n\r\n";
             }
+
             Console.WriteLine(stepDisplay);
             Console.ReadLine();
         }
-
-        //-----------------------------------------------------------------------------------------------//
-
-        //Reset/Clear Recipe
-
-        //-----------------------------------------------------------------------------------------------//
-        /// <summary>
-        /// Method to Reset Recipe
-        /// </summary>
-        /*public void ClearRecipe()
-        {
-            this.ErrorPrint("Are you sure you want to clear this recipe. Warning, this recipe will be permanently deleted!");
-
-            //Switch statement input that prevents incorrect inputs
-            int confirm = this.GetPositiveIntegerInput("Enter 1 to continue");
-
-            //If statement that checks that the choice was confirmed, then resets the recipe
-            if (confirm == 1)
-            {
-                this.NumberOfIngredients = 0;
-                this.NumberOfSteps = 0;
-                this.RecipeName = "";
-                this.Scaled = false;
-                this.TotalCalories = 0;
-
-                IngredientList.Clear();
-                IngredientList.TrimExcess();
-
-                //Array.Clear(IngredientArray, 0, IngredientArray.Length);
-
-                StepList.Clear();
-                StepList.TrimExcess();
-
-                //Array.Clear(StepArray, 0, StepArray.Length);
-
-                // Set the console foreground color to green then reset it after displaying a string
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\r\n       Successfully Deleted");
-                Console.ResetColor();
-                Console.ReadLine();
-            }
-            else
-            {
-                this.ErrorPrint("\r\n       Cancelled");
-                Console.ReadLine();
-            }
-        }*/
-
+        
         //-----------------------------------------------------------------------------------------------//
 
         //Error Handling Methods
