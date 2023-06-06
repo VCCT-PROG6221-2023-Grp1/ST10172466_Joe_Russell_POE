@@ -46,6 +46,7 @@ namespace PROG6221_POE_Part_1.Classes
             //Displays the text
             Console.WriteLine(inputString);
 
+
             try
             {
                 //While input is empty, user is prompted for valid input
@@ -55,7 +56,7 @@ namespace PROG6221_POE_Part_1.Classes
 
                     if (string.IsNullOrWhiteSpace(input))
                     {
-                        // Set the console foreground color to red then reset it after displaying a string
+                        //Set the console foreground color to red then reset it after displaying a string
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid input. Please enter a non-empty value.");
                         Console.ResetColor();

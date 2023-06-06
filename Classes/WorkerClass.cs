@@ -57,6 +57,9 @@ namespace PROG6221_POE_Part_1.Classes
         //Main Menu
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Menu that displays program functions
+        /// </summary>
         public void MainMenu()
         {
             //Format Menu
@@ -65,7 +68,7 @@ namespace PROG6221_POE_Part_1.Classes
             //Try-catch to handle errors
             try
             {
-                //Switch statement input
+                //Switch statement input to choose whether to add new recipe or search recipes
                 int option = RecipeClassObjectHere.GetPositiveIntegerInput("     Enter 1 to Add Recipe" +
                     "\n     Enter 2 to Search/View More Options for Recipe" +
                     "\n     Enter 3 to Exit");
@@ -80,12 +83,16 @@ namespace PROG6221_POE_Part_1.Classes
                 switch (option)
                 {
                     case 1:
+                        //Calling method to add new recipe
                         AddRecipe();
                         break;
                     case 2:
+                        //Calling method to search for existing recipes
                         SearchRecipe();
                         break;
                     case 3:
+                        //Exit the program
+                        Environment.Exit(0);
                         return;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
@@ -103,36 +110,60 @@ namespace PROG6221_POE_Part_1.Classes
 
         //-----------------------------------------------------------------------------------------------//
 
-        //Add Recipe to List
+        //AddCalories Recipe to List
 
         //-----------------------------------------------------------------------------------------------//
         private void AddRecipe()
         {
+            //Creating recipe class instance
             RecipeClass recipe = new RecipeClass();
 
-            Console.Write("Enter recipe name: ");
-            recipe.RecipeName = Console.ReadLine();
-
-            //Ingredient Input
-            int numberOfIngredients = RecipeClassObjectHere.GetPositiveIntegerInput("Enter number of ingredients: ");
-
-            for (int i = 0; i < numberOfIngredients; i++)
+            try
             {
-                recipe.GetRecipeIngredientInput();
+                //Assigns value to Recipe Name by calling input method
+                recipe.RecipeName = RecipeClassObjectHere.RecipeNameInputMethod("\r\nEnter the Recipe Name: ");
+
+                //Set the console foreground color to magenta and reset it after displaying a string
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("_______________________________________________________________________________________");
+                Console.ResetColor();
+
+                //Assigns value to Number of Ingredients by calling input method
+                int numberOfIngredients = RecipeClassObjectHere.GetPositiveIntegerInput("\r\nEnter Number of Ingredients: ");
+
+                //For loop to input ingredient values
+                for (int i = 0; i < numberOfIngredients; i++)
+                {
+                    recipe.GetRecipeIngredientInput();
+                }
+
+                //Set the console foreground color to magenta and reset it after displaying a string
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("_______________________________________________________________________________________");
+                Console.ResetColor();
+
+                //Assigns value to Number of Steps by calling input method
+                int numberOfSteps = RecipeClassObjectHere.GetPositiveIntegerInput("\r\nEnter Number of Steps: ");
+
+                //For loop to input step values
+                for (int i = 0; i < numberOfSteps; i++)
+                {
+                    recipe.GetRecipeStepInput();
+                }
+
+                //Adding a new recipe to Recipe List
+                RecipeList.Add(recipe);
+
+                // Set the console foreground color to green then reset it after displaying a string
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\r\n     Recipe Added Successfully");
+                Console.ResetColor();
+                Console.ReadLine();
             }
-
-
-            //Step Input
-            int numberOfSteps = RecipeClassObjectHere.GetPositiveIntegerInput("Enter number of steps: ");
-
-            for (int i = 0; i < numberOfSteps; i++)
+            catch (System.Exception ex)
             {
-                recipe.GetRecipeStepInput();
+                Console.WriteLine(ex.ToString());
             }
-
-            RecipeList.Add(recipe);
-            Console.WriteLine("Recipe added successfully");
-
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -144,7 +175,8 @@ namespace PROG6221_POE_Part_1.Classes
         {
             if (RecipeList.Count == 0)
             {
-                Console.WriteLine("No Recipes Found.");
+                RecipeClassObjectHere.ErrorPrint("\r\n     No Recipes Found");
+                Console.ReadLine();
                 return;
             }
 
@@ -237,7 +269,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <param name="recipe"></param>
         public void DeleteRecipe(RecipeClass recipe)
         {
-            RecipeClassObjectHere.ErrorPrint("Are you sure you want to clear this recipe. Warning, this recipe will be permanently deleted!");
+            RecipeClassObjectHere.ErrorPrint("\r\nAre you sure you want to clear this recipe. Warning, this recipe will be permanently deleted!");
 
             //Switch statement input that prevents incorrect inputs
             int confirm = RecipeClassObjectHere.GetPositiveIntegerInput("Enter 1 to continue");
@@ -249,13 +281,13 @@ namespace PROG6221_POE_Part_1.Classes
 
                 // Set the console foreground color to green then reset it after displaying a string
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\r\n       Successfully Deleted");
+                Console.WriteLine("\r\n     Successfully Deleted");
                 Console.ResetColor();
                 Console.ReadLine();
             }
             else
             {
-                RecipeClassObjectHere.ErrorPrint("\r\n       Cancelled");
+                RecipeClassObjectHere.ErrorPrint("\r\n     Cancelled");
                 Console.ReadLine();
             }
         }

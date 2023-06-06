@@ -1,13 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PROG6221_POE_Part_1.Classes
 {
+    public delegate void SerialData(double dataOut);
+
     public class RecipeClass
     {
+        //Create A listener
+        public event SerialData SerialDataSend;
+
+        /// <summary>
+        /// Virtual means it can be overriden and derrived by any class - Access Modifier
+        /// This method will invoke the delegate and link the methods
+        /// </summary>
+        /// <param name="dataOut"></param>
+        public virtual void OnDataSend(double dataOut)
+        {
+            SerialDataSend?.Invoke(dataOut);
+        }
+
         /// <summary>
         /// Ingredient Class List
         /// </summary>
@@ -88,88 +104,8 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
-        /// <summary>
-        /// Method to run Recipe Class
-        /// </summary>
-        public void RunRecipe()
-        {
-            //Format Menu
-            this.Format();
-
-            //Switch statement input
-            int option = this.GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
-                "\n     Enter 2 to Reset Quantity Values" +
-                "\n     Enter 3 to View Recipe" +
-                "\n     Enter 4 to Clear All Values" +
-                "\n     Enter 5 to Exit");
-
-            //Prevents incorrect switch statement choice if there is no recipe
-            if (this.RecipeName.Equals("") && option > 1 && option < 6)
-            {
-                this.ErrorPrint("\r\nNo Recipe Entered");
-                Console.ReadLine();
-                Console.Clear();
-                RunRecipe();
-            }
-
-            //Switch statement to access all program functions
-            switch (option)
-            {
-                case 1:
-                    //Runs scaling method
-                    this.ScaleRecipe();
-                    break;
-                case 2:
-                    //Runs scale Reset method
-                    this.ResetQuantity();
-                    break;
-                case 3:
-                    //Runs display method
-                    this.DisplayRecipe();
-                    break;
-                case 4:
-                    //Runs delete recipe method
-                    //this.ClearRecipe();
-                    break;
-                case 5:
-                    //Exits application
-                    Environment.Exit(0);
-                    break;
-                default:
-                    this.ErrorPrint("Invalid option selected.");
-                    Console.ReadLine();
-                    break;
-            }
-
-            //Clear console for tidiness
-            Console.Clear();
-            this.RunRecipe();
-
-        }
-
-        //-----------------------------------------------------------------------------------------------//
 
         //Input Methods
-
-        //-----------------------------------------------------------------------------------------------//
-        /// <summary>
-        /// Method to get Recipe Inputs
-        /// </summary>
-        public void RecipeInput()
-        {
-            try
-            {
-                //Assigns value to Recipe Name by calling input method
-                this.RecipeName = this.RecipeNameInputMethod("\r\nEnter the Recipe Name:");                
-
-                this.GetRecipeIngredientInput();
-                this.GetRecipeStepInput();
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
@@ -181,32 +117,25 @@ namespace PROG6221_POE_Part_1.Classes
             try
             {
                 //Creating delegate instance and assigning method to it
-                Calculate addDelegate = new Calculate(Add);
+                Calculate addDelegate = new Calculate(AddCalories);
 
-                //Assigns value to Number of Ingredients by calling input method
-                //this.NumberOfIngredients = this.GetPositiveIntegerInput("\r\nEnter Number of Ingredients:");
+                var ingredients = new IngredientClass();
 
-                //For loop to populate Ingredient Array
-                //for (int i = 0; i < this.NumberOfIngredients; i++)
-                //{
-                    var ingredients = new IngredientClass();
+                //Calling method to input ingredient values
+                IngredientClassObjectHere.IngredientInput();
 
-                    //Calling method to input ingredient values
-                    IngredientClassObjectHere.IngredientInput();
+                //Assigning values to Ingredient List
+                ingredients.IngredientName = this.IngredientClassObjectHere.IngredientName;
+                ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
+                ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
+                ingredients.CalorieAmount = this.IngredientClassObjectHere.CalorieAmount;
+                ingredients.FoodGroup = this.IngredientClassObjectHere.FoodGroup;
 
-                    //Assigning values to Ingredient List
-                    ingredients.IngredientName = this.IngredientClassObjectHere.IngredientName;
-                    ingredients.IngredientQuantity = this.IngredientClassObjectHere.IngredientQuantity;
-                    ingredients.MeasurementUnit = this.IngredientClassObjectHere.MeasurementUnit;
-                    ingredients.CalorieAmount = this.IngredientClassObjectHere.CalorieAmount;
-                    ingredients.FoodGroup = this.IngredientClassObjectHere.FoodGroup;
+                //Delegate that calculates total calories
+                this.TotalCalories = addDelegate(this.TotalCalories, ingredients.CalorieAmount);
 
-                    //Delegate that calculates total calories
-                    this.TotalCalories = addDelegate(this.TotalCalories, ingredients.CalorieAmount);
-
-
-                    this.IngredientList.Add(ingredients);
-                //}
+                //Assigning values to Ingredient List
+                this.IngredientList.Add(ingredients);
             }
             catch (Exception ex)
             {
@@ -214,19 +143,8 @@ namespace PROG6221_POE_Part_1.Classes
             }
         }
 
-//-----------------------------------------------------------------------------------------------//
-        /// <summary>
-        /// Delegate Method
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public double Add(double x, double y)
-        {
-            return x + y;
-        }
-
         //-----------------------------------------------------------------------------------------------//
+
         /// <summary>
         /// Method to get the Step Inputs
         /// </summary>
@@ -235,26 +153,19 @@ namespace PROG6221_POE_Part_1.Classes
             //Try-catch to handle errors
             try
             {
-                // Set the console foreground color to dark red then reset it after displaying a string
+                //Set the console foreground color to dark red then reset it after displaying a string
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("____________________________________________________________________");
                 Console.ResetColor();
 
-                //Assigns value to Number of Steps by calling input method
-                //this.NumberOfSteps = GetPositiveIntegerInput("\r\nEnter Number of Steps: ");
+                var steps = new StepClass();
 
-                //For loop to populate Step Array
-                //for (int i = 0; i < this.NumberOfSteps; i++)
-                //{
-                    var steps = new StepClass();
+                //Calling method to input step values
+                StepClassObjectHere.StepInput();
 
-                    //Calling method to input step values
-                    StepClassObjectHere.StepInput();
-
-                    //Assigning values to Step List
-                    steps.StepDescription = this.StepClassObjectHere.StepDescription;
-                    StepList.Add(steps);
-                //}
+                //Assigning values to Step List
+                steps.StepDescription = this.StepClassObjectHere.StepDescription;
+                StepList.Add(steps);
             }
             catch (System.Exception ex)
             {
@@ -484,9 +395,9 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 ingredientDisplay += "- " + ingredient.IngredientQuantity.ToString() +
                     " " + ingredient.MeasurementUnit +
-                    " of " + ingredient.IngredientName + 
+                    " of " + ingredient.IngredientName +
                     ", " + ingredient.CalorieAmount.ToString() + " Calorie(s)" +
-                    ", " + ingredient.FoodGroup + " Food Group" + 
+                    ", " + ingredient.FoodGroup + " Food Group" +
                     "\r\n";
             }
             Console.WriteLine(ingredientDisplay);
@@ -494,8 +405,8 @@ namespace PROG6221_POE_Part_1.Classes
             //Displays total calories of recipe
             Console.WriteLine("Total Calories: " + this.TotalCalories);
 
-            //Prints a warning if total calories exceeds 300
-            if(this.TotalCalories > 300)
+            //Prints a warning if Total Calories exceeds 300
+            if (this.TotalCalories > 300)
             {
                 this.ErrorPrint("\r\nWarning!!! Excessive Calories detected!\r\n" +
                     "\r\nCalories are the unit used to determine the amount of energy in food or drinks.\r\n" +
@@ -533,7 +444,65 @@ namespace PROG6221_POE_Part_1.Classes
             Console.WriteLine(stepDisplay);
             Console.ReadLine();
         }
-        
+
+        //-----------------------------------------------------------------------------------------------//
+
+        //Delegate Methods
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Delegate method to calculate the sum of the total calories
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public double AddCalories(double x, double y)
+        {
+            return x + y;
+        }
+
+
+
+        /// <summary>
+        /// This method is where the information comes from
+        /// </summary>
+        public void DataIn(double myData)
+        //public void SendData( totalCalories)
+        {
+            //This would be calories calculates
+            if (myData > 300)
+            {
+                this.OnDataSend(myData);
+            }
+
+        }
+
+
+
+        public void Test()
+        {
+            //Assigning the delegates
+            this.SerialDataSend += DisplayCalorieWarning;
+
+            //We are only Calling this method
+            double MyDouble = 299;
+            this.DataIn(MyDouble);
+        }
+
+
+        /// <summary>
+        /// THis is where the data arrives
+        /// </summary>
+        /// <param name="dataOut"></param>
+        private static void DisplayCalorieWarning(double dataOut)
+        {
+            string printData = dataOut.ToString();
+            Console.WriteLine(printData);
+
+            Console.ReadLine();
+        }
+
+
         //-----------------------------------------------------------------------------------------------//
 
         //Error Handling Methods

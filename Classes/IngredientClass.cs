@@ -35,8 +35,8 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void IngredientInput()
         {
-            // Set the console foreground color to dark red and reset it after displaying a string
-            Console.ForegroundColor = ConsoleColor.DarkRed;          
+            //Set the console foreground color to dark red and reset it after displaying a string
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("____________________________________________________________________");
             Console.ResetColor();
 
@@ -45,7 +45,7 @@ namespace PROG6221_POE_Part_1.Classes
 
             // Set the console foreground color to dark cyan and reset it after displaying a string
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("\r\nChoose Measurement Unit:");            
+            Console.WriteLine("\r\nChoose Measurement Unit:");
             Console.ResetColor();
 
             //Switch statement input to choose Measurement Unit type
@@ -97,7 +97,11 @@ namespace PROG6221_POE_Part_1.Classes
         public string IngredientNameInputMethod(string inputString)
         {
             string input = "";
+
+            //Displays the text
             Console.WriteLine(inputString);
+
+            //Try-catch to handle errors
             try
             {
                 //While input is empty or while it contains digits or symbols, user is prompted for valid input
@@ -133,6 +137,8 @@ namespace PROG6221_POE_Part_1.Classes
 
             //Displays the text
             Console.WriteLine(inputString);
+
+            //Try-catch to handle errors
             try
             {
                 //While input is not a double or while it contains 0 or a negative number, user is prompted for valid input
@@ -171,6 +177,8 @@ namespace PROG6221_POE_Part_1.Classes
 
             //Displays the text
             Console.WriteLine(inputString);
+
+            //Try-catch to handle errors
             try
             {
                 //While input is empty or while it contains digits or symbols, user is prompted for valid input
@@ -206,6 +214,8 @@ namespace PROG6221_POE_Part_1.Classes
 
             //Displays the text
             Console.WriteLine(inputString);
+
+            //Try-catch to handle errors
             try
             {
                 //While input is not a double or while it contains 0 or a negative number, user is prompted for valid input
@@ -239,7 +249,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <returns></returns>
         public void FoodGroupInputMethod()
         {
-            // Set the console foreground color to dark cyan and reset it after displaying a string
+            //Set the console foreground color to dark cyan and reset it after displaying a string
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("\r\nChoose Food Group:");
             Console.ResetColor();
@@ -297,6 +307,8 @@ namespace PROG6221_POE_Part_1.Classes
 
             //Displays the text
             Console.WriteLine(inputString);
+
+            //Try-catch to handle errors
             try
             {
                 //While input is not a double or while it contains 0 or a negative number, user is prompted for valid input
@@ -329,14 +341,15 @@ namespace PROG6221_POE_Part_1.Classes
         /// <param name="input"></param>
         public void ErrorPrint(string input)
         {
-            // Set the console foreground color to red
+            //Set the console foreground color to red
             Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine(input);
 
-            // Reset the console foreground color
+            //Reset the console foreground color
             Console.ResetColor();
         }
+        //-----------------------------------------------------------------------------------------------//
     }
 }
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//
