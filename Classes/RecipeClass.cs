@@ -338,20 +338,6 @@ namespace PROG6221_POE_Part_1.Classes
                 {
                     //Reverses scale operation
                     ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
-
-                    //------- Part 2 Code -------
-                    /*if (this.ScaleFactor == 0.5)
-                    {
-                        ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
-                    }
-                    else if (this.ScaleFactor == 0.5)
-                    {
-                        ingredient.IngredientQuantity = ingredient.IngredientQuantity / this.ScaleFactor;
-                    }
-                    else if (this.ScaleFactor == 0.5)
-                    {
-
-                    }*/
                 }
 
                 //Set the console foreground color to green then reset it after displaying string
@@ -395,11 +381,11 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 (string measurementUnitOutput, double ingredientQuantityOutput) = ConversionClassObjectHere.CheckForUpdates(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
 
-                //if (string.IsNullOrEmpty(measurementUnitOutput))
-                //{
+                if (!string.IsNullOrEmpty(measurementUnitOutput))
+                {
                     ingredient.MeasurementUnit = measurementUnitOutput;
                     ingredient.IngredientQuantity = ingredientQuantityOutput;
-                //}
+                }
 
                 ingredientDisplay += "- " + ingredient.IngredientQuantity.ToString() +
                     " " + ingredient.MeasurementUnit +

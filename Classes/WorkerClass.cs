@@ -38,6 +38,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public void RunWorker()
         {
+            //Calling method to display main menu of the application
             this.MainMenu();
         }
 
@@ -73,11 +74,11 @@ namespace PROG6221_POE_Part_1.Classes
                 {
                     case 1:
                         //Calling method to add new recipe
-                        AddRecipe();
+                        this.AddRecipe();
                         break;
                     case 2:
                         //Calling method to search for existing recipes
-                        SearchRecipe();
+                        this.SearchRecipe();
                         break;
                     case 3:
                         //Exit the program
@@ -109,8 +110,28 @@ namespace PROG6221_POE_Part_1.Classes
 
             try
             {
-                //Assigns value to Recipe Name by calling input method
-                recipe.RecipeName = RecipeClassObjectHere.RecipeNameInputMethod("\r\nEnter the Recipe Name: ");
+                string recipeNameInput = string.Empty;
+                bool foundMatch = false;
+
+                //Assigns value to temporary input by calling input method
+                recipeNameInput = RecipeClassObjectHere.RecipeNameInputMethod("\r\nEnter the Recipe Name: ");
+
+                //Foreach loop to ensure that recipe names are unique
+                foreach (RecipeClass test in this.RecipeList)
+                {
+                    if (test.RecipeName.Equals(recipeNameInput, StringComparison.OrdinalIgnoreCase))
+                    {
+                        foundMatch = true;
+                        RecipeClassObjectHere.ErrorPrint("\r\nPlease enter a unique Recipe Name");
+                        this.AddRecipe();
+                    }
+                }
+
+                //Assigns value to Recipe Name if input is unique
+                if (!foundMatch)
+                {
+                    recipe.RecipeName = recipeNameInput;
+                }
 
                 //Set the console foreground color to magenta and reset it after displaying a string
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -169,16 +190,26 @@ namespace PROG6221_POE_Part_1.Classes
                 return;
             }
 
-            //Print list of recipe names
-            Console.WriteLine("===== Recipes =====");
+
+            // Set the console foreground color to dark cyan and reset it after displaying a string
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("========= Recipes =========");
+            Console.ResetColor();
+                      
+            //Foreach loop to print alphabetised list of recipe names
             foreach (var recipe in RecipeList.OrderBy(r => r.RecipeName))
             {
-                Console.WriteLine(recipe.RecipeName);
+                Console.WriteLine("   - " + recipe.RecipeName);
             }
-            Console.WriteLine("===================");
+
+            // Set the console foreground color to dark cyan and reset it after displaying a string
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("===========================");                               
+            Console.ResetColor();
+            
 
             //Search Input
-            Console.Write("Enter the name of the recipe you want to select: ");
+            Console.WriteLine("\r\nEnter the name of the recipe you want to select: ");
             string recipeName = Console.ReadLine();
 
             //Search
