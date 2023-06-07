@@ -33,39 +33,54 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to check for any changes in the values that it is passed
+        /// </summary>
+        /// <param name="measurementUnitInput"></param>
+        /// <param name="ingredientQuantityInput"></param>
+        /// <returns></returns>
         public (string, double) CheckForUpdates(string measurementUnitInput, double ingredientQuantityInput)
-        {            
+        {
             if (measurementUnitInput.Equals("Millilitres") || measurementUnitInput.Equals("Millilitre")
                 || measurementUnitInput.Equals("Grams") || measurementUnitInput.Equals("Gram"))
             {
-                ConvertQuantitiesUpwards(measurementUnitInput, ingredientQuantityInput);
+                return ConvertQuantitiesUpwards(measurementUnitInput, ingredientQuantityInput);
             }
 
             if (measurementUnitInput.Equals("Litres") || measurementUnitInput.Equals("Litre")
-                || measurementUnitInput.Equals("Grams") || measurementUnitInput.Equals("Gram"))
+                || measurementUnitInput.Equals("Kilograms") || measurementUnitInput.Equals("Kilogram"))
             {
-                ConvertQuantitiesDownwards(measurementUnitInput, ingredientQuantityInput);
+                return ConvertQuantitiesDownwards(measurementUnitInput, ingredientQuantityInput);
             }
-            return (this.MeasurementUnitHere, this.IngredientQuantityHere);
+
+            // If no updates needed, return the original values
+            return (measurementUnitInput, ingredientQuantityInput);
         }
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// 
+        /// Method to convert values from millilitres and grams to litres and kilograms
         /// </summary>
         /// <param name="measurementUnitInput"></param>
         /// <param name="ingredientQuantityInput"></param>
-        public void ConvertQuantitiesUpwards(string measurementUnitInput, double ingredientQuantityInput)
+        /// <returns></returns>
+        public (string, double) ConvertQuantitiesUpwards(string measurementUnitInput, double ingredientQuantityInput)
         {
-            double output = 0;            
+            double output = 0;
 
             if (measurementUnitInput.Equals("Millilitres") || measurementUnitInput.Equals("Millilitre"))
             {
                 if (ingredientQuantityInput >= 1000)
                 {
                     output = ingredientQuantityInput / 1000;
-                    this.MeasurementUnitHere = (output == 1) ? "Litre" : "Litres";
-                    this.IngredientQuantityHere = output;
+                    string newMeasurementUnit = (output == 1) ? "Litre" : "Litres";
+                    return (newMeasurementUnit, output);
+                }
+                else
+                {
+                    output = ingredientQuantityInput;
+                    string newMeasurementUnit = (output == 1) ? "Millilitre" : "Millilitres";
+                    return (newMeasurementUnit, output);
                 }
             }
             else if (measurementUnitInput.Equals("Grams") || measurementUnitInput.Equals("Gram"))
@@ -73,31 +88,44 @@ namespace PROG6221_POE_Part_1.Classes
                 if (ingredientQuantityInput >= 1000)
                 {
                     output = ingredientQuantityInput / 1000;
-                    this.MeasurementUnitHere = (output == 1) ? "Kilogram" : "Kilograms";
-                    this.IngredientQuantityHere = output;
+                    string newMeasurementUnit = (output == 1) ? "Kilogram" : "Kilograms";
+                    return (newMeasurementUnit, output);
+                }
+                else
+                {
+                    output = ingredientQuantityInput;
+                    string newMeasurementUnit = (output == 1) ? "Gram" : "Grams";
+                    return (newMeasurementUnit, output);
                 }
             }
+            // If no conversion needed, return the original values
+            return (measurementUnitInput, ingredientQuantityInput);
         }
-
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// 
+        /// Method to convert values from litres and kilograms to millilitres and grams
         /// </summary>
         /// <param name="measurementUnitInput"></param>
         /// <param name="ingredientQuantityInput"></param>
-        public void ConvertQuantitiesDownwards(string measurementUnitInput, double ingredientQuantityInput)
+        /// <returns></returns>
+        public (string, double) ConvertQuantitiesDownwards(string measurementUnitInput, double ingredientQuantityInput)
         {
             double output = 0;
-            this.MeasurementUnitHere = measurementUnitInput;
 
             if (measurementUnitInput.Equals("Litres") || measurementUnitInput.Equals("Litre"))
             {
                 if (ingredientQuantityInput < 1)
                 {
                     output = ingredientQuantityInput * 1000;
-                    this.MeasurementUnitHere = (output == 1) ? "Millilitre" : "Millilitres";
-                    this.IngredientQuantityHere = output;
+                    string newMeasurementUnit = (output == 1) ? "Millilitre" : "Millilitres";
+                    return (newMeasurementUnit, output);
+                }
+                else
+                {
+                    output = ingredientQuantityInput;
+                    string newMeasurementUnit = (output == 1) ? "Litre" : "Litres";
+                    return (newMeasurementUnit, output);
                 }
             }
             else if (measurementUnitInput.Equals("Kilograms") || measurementUnitInput.Equals("Kilogram"))
@@ -105,11 +133,20 @@ namespace PROG6221_POE_Part_1.Classes
                 if (ingredientQuantityInput < 1)
                 {
                     output = ingredientQuantityInput * 1000;
-                    this.MeasurementUnitHere = (output == 1) ? "Gram" : "Grams";
-                    this.IngredientQuantityHere = output;
+                    string newMeasurementUnit = (output == 1) ? "Gram" : "Grams";
+                    return (newMeasurementUnit, output);
+                }
+                else
+                {
+                    output = ingredientQuantityInput;
+                    string newMeasurementUnit = (output == 1) ? "Kilogram" : "Kilograms";
+                    return (newMeasurementUnit, output);
                 }
             }
+            // If no conversion needed, return the original values
+            return (measurementUnitInput, ingredientQuantityInput);
         }
+        //-----------------------------------------------------------------------------------------------//
     }
-}       
+}    
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//

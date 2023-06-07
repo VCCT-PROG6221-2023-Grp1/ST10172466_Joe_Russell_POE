@@ -64,10 +64,10 @@ namespace PROG6221_POE_Part_1.Classes
             switch (option)
             {
                 case 1:
-                    this.MeasurementUnit = "Millilitre(s)";
+                    this.MeasurementUnit = "Millilitres";
                     break;
                 case 2:
-                    this.MeasurementUnit = "Gram(s)";
+                    this.MeasurementUnit = "Grams";
                     break;
                 case 3:
                     this.MeasurementUnit = this.MeasurementUnitInputMethod("\r\nPlease enter a custom Measurement Unit:"); ;
