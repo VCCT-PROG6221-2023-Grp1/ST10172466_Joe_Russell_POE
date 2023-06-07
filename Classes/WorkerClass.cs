@@ -103,11 +103,15 @@ namespace PROG6221_POE_Part_1.Classes
         //Add Recipe to List
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method to add a new recipe
+        /// </summary>
         private void AddRecipe()
         {
             //Creating recipe class instance
             RecipeClass recipe = new RecipeClass();
 
+            //Try-catch to handle errors
             try
             {
                 string recipeNameInput = string.Empty;
@@ -177,61 +181,74 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
-        
+
         //Search Recipes
-        
+
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method that displays all recipe names and allows users to select one
+        /// </summary>
         private void SearchRecipe()
         {
-            if (RecipeList.Count == 0)
+            //Try-catch to handle errors
+            try
             {
-                RecipeClassObjectHere.ErrorPrint("\r\n     No Recipes Found");
-                Console.ReadLine();
-                return;
+                //Ensures that a search can only be done if there is a pre-existing recipe
+                if (RecipeList.Count == 0)
+                {
+                    RecipeClassObjectHere.ErrorPrint("\r\n     No Recipes Found");
+                    Console.ReadLine();
+                    return;
+                }
+
+                //Set the console foreground color to dark cyan and reset it after displaying a string
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("========= Recipes =========");
+                Console.ResetColor();
+
+                //Foreach loop to print alphabetised list of recipe names
+                foreach (var recipe in RecipeList.OrderBy(r => r.RecipeName))
+                {
+                    Console.WriteLine("   - " + recipe.RecipeName);
+                }
+
+                // Set the console foreground color to dark cyan and reset it after displaying a string
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("===========================");
+                Console.ResetColor();
+
+
+                //Search Input
+                Console.WriteLine("\r\nEnter the name of the recipe you want to select: ");
+                string recipeName = Console.ReadLine();
+
+                //Selecting specific recipe using LINQ
+                RecipeClass selectedRecipe = RecipeList.FirstOrDefault(r => r.RecipeName.Equals(recipeName, StringComparison.OrdinalIgnoreCase));
+
+                //Error Handling
+                if (selectedRecipe != null)
+                {
+                    //Display recipe
+                    selectedRecipe.DisplayRecipe();
+
+                    Console.Clear();
+
+                    //Show New Menu
+                    RecipeMenu(selectedRecipe);
+                }
+                else
+                {
+                    RecipeClassObjectHere.ErrorPrint("\r\nRecipe not found. Please ensure that a recipe with that name exists.");
+                    Console.ReadLine();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
 
-
-            // Set the console foreground color to dark cyan and reset it after displaying a string
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("========= Recipes =========");
-            Console.ResetColor();
-                      
-            //Foreach loop to print alphabetised list of recipe names
-            foreach (var recipe in RecipeList.OrderBy(r => r.RecipeName))
-            {
-                Console.WriteLine("   - " + recipe.RecipeName);
-            }
-
-            // Set the console foreground color to dark cyan and reset it after displaying a string
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("===========================");                               
-            Console.ResetColor();
-            
-
-            //Search Input
-            Console.WriteLine("\r\nEnter the name of the recipe you want to select: ");
-            string recipeName = Console.ReadLine();
-
-            //Search
-            RecipeClass selectedRecipe = RecipeList.FirstOrDefault(r => r.RecipeName.Equals(recipeName, StringComparison.OrdinalIgnoreCase));
-
-            //Error Handling
-            if (selectedRecipe != null)
-            {
-                //Display recipe
-                selectedRecipe.DisplayRecipe();
-
-                Console.Clear();
-                
-                //Show New Menu
-                RecipeMenu(selectedRecipe);
-            }
-            else
-            {
-                Console.WriteLine("Recipe not found.");
-            }
-
-            Console.Clear();            
+            Console.Clear();
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -239,42 +256,55 @@ namespace PROG6221_POE_Part_1.Classes
         //Show Search Recipe Menu
 
         //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Method that displays a menu that allows users to interact with a specific recipe
+        /// </summary>
+        /// <param name="recipe"></param>
         private void RecipeMenu(RecipeClass recipe)
         {
             //Format Menu
             RecipeClassObjectHere.Format();
 
-            //Switch statement input
-            int option = RecipeClassObjectHere.GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
-                "\n     Enter 2 to Reset Quantity Values" +
-                "\n     Enter 3 to View Recipe" +
-                "\n     Enter 4 to Delete Recipe" +
-                "\n     Enter 5 to Return to Main Menu");
-
-            switch (option)
+            //Try-catch to handle errors
+            try
             {
-                case 1:
-                    //Scales quantity values
-                    recipe.ScaleRecipe();
-                    break;
-                case 2:
-                    //Resets quantity values to original
-                    recipe.ResetQuantity();
-                    break;
-                case 3:
-                    //Displays Recipe
-                    recipe.DisplayRecipe();
-                    break;
-                case 4:
-                    //Deletes Recipe
-                    DeleteRecipe(recipe);
-                    return;
-                case 5:
-                    return;
-                default:
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    break;
+                //Switch statement input
+                int option = RecipeClassObjectHere.GetPositiveIntegerInput("     Enter 1 to Scale Recipe Quantity Values" +
+                    "\n     Enter 2 to Reset Quantity Values" +
+                    "\n     Enter 3 to View Recipe" +
+                    "\n     Enter 4 to Delete Recipe" +
+                    "\n     Enter 5 to Return to Main Menu");
+
+                switch (option)
+                {
+                    case 1:
+                        //Calls method to scale quantity values
+                        recipe.ScaleRecipe();
+                        break;
+                    case 2:
+                        //Calls method to reset quantity values to original
+                        recipe.ResetQuantity();
+                        break;
+                    case 3:
+                        //Calls method to display Recipe
+                        recipe.DisplayRecipe();
+                        break;
+                    case 4:
+                        //Calls method to delete Recipe
+                        DeleteRecipe(recipe);
+                        return;
+                    case 5:
+                        return;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
             Console.Clear();
             this.RecipeMenu(recipe);
         }
@@ -291,24 +321,32 @@ namespace PROG6221_POE_Part_1.Classes
         {
             RecipeClassObjectHere.ErrorPrint("\r\nAre you sure you want to clear this recipe. Warning, this recipe will be permanently deleted!");
 
-            //Switch statement input that prevents incorrect inputs
-            int confirm = RecipeClassObjectHere.GetPositiveIntegerInput("Enter 1 to continue");
-
-            //If statement that checks that the choice was confirmed, then resets the recipe
-            if (confirm == 1)
+            //Try-catch to handle errors
+            try
             {
-                RecipeList.Remove(recipe);
+                //Switch statement input that prevents incorrect inputs
+                int confirm = RecipeClassObjectHere.GetPositiveIntegerInput("Enter 1 to continue");
 
-                // Set the console foreground color to green then reset it after displaying a string
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\r\n     Successfully Deleted");
-                Console.ResetColor();
-                Console.ReadLine();
+                //If statement that checks that the choice was confirmed, then resets the recipe
+                if (confirm == 1)
+                {
+                    RecipeList.Remove(recipe);
+
+                    // Set the console foreground color to green then reset it after displaying a string
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\r\n     Successfully Deleted");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                }
+                else
+                {
+                    RecipeClassObjectHere.ErrorPrint("\r\n     Cancelled");
+                    Console.ReadLine();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                RecipeClassObjectHere.ErrorPrint("\r\n     Cancelled");
-                Console.ReadLine();
+                Console.WriteLine(ex.ToString());
             }
         }
 

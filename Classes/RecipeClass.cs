@@ -144,7 +144,6 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
-
         /// <summary>
         /// Method to get the Step Inputs
         /// </summary>
@@ -215,27 +214,6 @@ namespace PROG6221_POE_Part_1.Classes
                         foreach (IngredientClass ingredient in IngredientList)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 0.5;
-
-                            //------- Part 2 Code -------
-                            /*this.ConversionClassObjectHere.CheckForUpdates(ingredient.IngredientQuantity, 0.5);
-
-                            ingredient.IngredientQuantity = this.ConversionClassObjectHere.SelectedVolume;
-
-                            ingredient.MeasurementUnit = this.ConversionClassObjectHere.SelectedUnit;
-
-                            if (ingredient.IngredientQuantity >= 1000)
-                            {
-                                this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-                            }
-                            else if (ingredient.IngredientQuantity < 1)
-                            {
-                                this.ConversionClassObjectHere.ConvertQuantitiesDownwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-                            }
-                            if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
-                            {
-                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
-                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
-                            }*/
                         }
 
                         //Sets scale factor to 0.5 for calculations
@@ -249,22 +227,6 @@ namespace PROG6221_POE_Part_1.Classes
                         foreach (IngredientClass ingredient in IngredientList)
                         {
                             ingredient.IngredientQuantity = ingredient.IngredientQuantity * 2;
-
-                            //------- Part 2 Code -------
-                            /*if (ingredient.IngredientQuantity >= 1000)
-                            {
-                                this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-                            }
-                            else if (ingredient.IngredientQuantity < 1)
-                            {
-                                this.ConversionClassObjectHere.ConvertQuantitiesDownwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);                            
-                            }
-
-                            if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
-                            {
-                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
-                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
-                            }*/
                         }
 
                         //Sets scale factor to 2 for calculations
@@ -276,23 +238,7 @@ namespace PROG6221_POE_Part_1.Classes
                     case 3:
                         foreach (IngredientClass ingredient in IngredientList)
                         {
-                            ingredient.IngredientQuantity = ingredient.IngredientQuantity * 3;
-
-                            //------- Part 2 Code -------
-                            /*if (ingredient.IngredientQuantity >= 1000)
-                            {
-                                this.ConversionClassObjectHere.ConvertQuantitiesUpwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-                            }
-                            else if (ingredient.IngredientQuantity < 1)
-                            {
-                                this.ConversionClassObjectHere.ConvertQuantitiesDownwards(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-                            }
-
-                            if (this.ConversionClassObjectHere.IngredientQuantityHere != 0)
-                            {
-                                ingredient.IngredientQuantity = this.ConversionClassObjectHere.IngredientQuantityHere;
-                                ingredient.MeasurementUnit = this.ConversionClassObjectHere.MeasurementUnitHere;
-                            }*/
+                            ingredient.IngredientQuantity = ingredient.IngredientQuantity * 3;                          
                         }
 
                         //Sets scale factor to 3 for calculations
@@ -376,55 +322,67 @@ namespace PROG6221_POE_Part_1.Classes
             //Reset the console foreground color
             Console.ResetColor();
 
-            //Foreach loop to display ingredients
-            foreach (IngredientClass ingredient in this.IngredientList)
+            //Try-catch to handle errors
+            try
             {
-                (string measurementUnitOutput, double ingredientQuantityOutput) = ConversionClassObjectHere.CheckForUpdates(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
-
-                if (!string.IsNullOrEmpty(measurementUnitOutput))
+                //Foreach loop to display ingredients
+                foreach (IngredientClass ingredient in this.IngredientList)
                 {
-                    ingredient.MeasurementUnit = measurementUnitOutput;
-                    ingredient.IngredientQuantity = ingredientQuantityOutput;
+                    //Calls method to convert measurement and quantity values to correct forms
+                    (string measurementUnitOutput, double ingredientQuantityOutput) =
+                        ConversionClassObjectHere.CheckForUpdates(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+
+                    //Ensures that a value was returned and assigns values to correct variables
+                    if (!string.IsNullOrEmpty(measurementUnitOutput))
+                    {
+                        ingredient.MeasurementUnit = measurementUnitOutput;
+                        ingredient.IngredientQuantity = ingredientQuantityOutput;
+                    }
+
+                    //Displays ingredients as a formatted string
+                    ingredientDisplay += "- " + ingredient.IngredientQuantity.ToString() +
+                        " " + ingredient.MeasurementUnit +
+                        " of " + ingredient.IngredientName +
+                        ", " + ingredient.CalorieAmount.ToString() + " Calorie(s)" +
+                        ", " + ingredient.FoodGroup + " Food Group" +
+                        "\r\n";
+                }
+                Console.WriteLine(ingredientDisplay);
+
+                //Displays total calories of recipe
+                Console.WriteLine("Total Calories: " + this.TotalCalories);
+
+                //Delegate to display calorie warning
+                this.TotalCalorieCalculation(this.TotalCalories);
+
+                //Set the console foreground color to green
+                Console.ForegroundColor = ConsoleColor.Green;
+
+                //Displays the steps
+                string stepDisplay = "";
+                Console.WriteLine("\r\nFollow these steps:" +
+                    "\r\n--------------------------------------------------------------------------------------");
+
+                //Reset the console foreground color
+                Console.ResetColor();
+
+                //Int that holds the step num
+                int i = 1;
+
+                //Foreach loop to display the steps with step numbers using int i
+                foreach (StepClass step in this.StepList)
+                {
+                    stepDisplay += "Step " + (i++) + ": \r\n" +
+                    step.StepDescription + "\r\n\r\n";
                 }
 
-                ingredientDisplay += "- " + ingredient.IngredientQuantity.ToString() +
-                    " " + ingredient.MeasurementUnit +
-                    " of " + ingredient.IngredientName +
-                    ", " + ingredient.CalorieAmount.ToString() + " Calorie(s)" +
-                    ", " + ingredient.FoodGroup + " Food Group" +
-                    "\r\n";
+                Console.WriteLine(stepDisplay);
+                Console.ReadLine();
             }
-            Console.WriteLine(ingredientDisplay);
-                        
-            //Displays total calories of recipe
-            Console.WriteLine("Total Calories: " + this.TotalCalories);
-            
-            //Delegate to display calorie warning
-            this.TotalCalorieCalculation(this.TotalCalories);
-            
-            //Set the console foreground color to green
-            Console.ForegroundColor = ConsoleColor.Green;
-
-            //Displays the steps
-            string stepDisplay = "";
-            Console.WriteLine("\r\nFollow these steps:" +
-                "\r\n--------------------------------------------------------------------------------------");
-
-            //Reset the console foreground color
-            Console.ResetColor();
-
-            //Int that holds the step num
-            int i = 1;
-
-            //Foreach loop to display the steps with step numbers using int i
-            foreach (StepClass step in this.StepList)
+            catch (Exception ex)
             {
-                stepDisplay += "Step " + (i++) + ": \r\n" +
-                step.StepDescription + "\r\n\r\n";
+                Console.WriteLine(ex.ToString());
             }
-
-            Console.WriteLine(stepDisplay);
-            Console.ReadLine();
         }
 
         //-----------------------------------------------------------------------------------------------//
@@ -444,32 +402,35 @@ namespace PROG6221_POE_Part_1.Classes
         }
 
         //-----------------------------------------------------------------------------------------------//
-        
-        public void TotalCalorieCalculation(double TotalCaloriesHere)
+        /// <summary>
+        /// Delegate method to assign the delegate and provide the input value
+        /// </summary>
+        /// <param name="TotalCalorieInput"></param>
+        public void TotalCalorieCalculation(double TotalCalorieInput)
         {
-            //Assigning the delegates
+            //Assigns the delegate
             this.SerialDataSend = DisplayCalorieWarning;
 
-            //We are only calling this method            
-            this.DataIn(TotalCaloriesHere);
+            //Method that takes the calorie input            
+            this.DataIn(TotalCalorieInput);
         }
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// This method is where the information comes from
+        /// Delegate method that checks if total calories exceeds 300
         /// </summary>
-        public void DataIn(double myData)
+        public void DataIn(double TotalCalorieOutput)
         {
             //This would be calories calculates
-            if (myData > 300)
+            if (TotalCalorieOutput > 300)
             {
-                this.OnDataSend(myData);
+                this.OnDataSend(TotalCalorieOutput);
             }
         }
 
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// This is where the data arrives
+        /// Delegate method to display the total calorie warning
         /// </summary>
         /// <param name="dataOut"></param>
         private static void DisplayCalorieWarning(double dataOut)
@@ -479,6 +440,7 @@ namespace PROG6221_POE_Part_1.Classes
             // Set the console foreground color to red
             Console.ForegroundColor = ConsoleColor.Red;
             
+            //Displays the warning
             Console.WriteLine("\r\nWarning!!! Excessive Calories detected!\r\n" +
                     "\r\nCalories are the unit used to determine the amount of energy in food or drinks.\r\n" +
                     "Excessive calorie consumption can lead to increased weight gain, which comes with a lot of risks.\r\n" +

@@ -9,6 +9,9 @@ namespace PROG6221_POE_Part_1
 {
     internal class Program
     {
+        /// <summary>
+        /// Local Worker Class Object
+        /// </summary>
         public static WorkerClass worker = new WorkerClass();
 
         static void Main(string[] args)
