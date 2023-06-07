@@ -7,7 +7,19 @@ using System.Threading.Tasks;
 
 namespace PROG6221_POE_Part_1.Classes
 {
+    /// <summary>
+    /// Declaring delegate for later use
+    /// </summary>
+    /// <param name="dataOut"></param>
     public delegate void SerialData(double dataOut);
+
+    /// <summary>
+    /// Delegate used to calculate calories
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public delegate double Calculate(double x, double y);
 
     public class RecipeClass
     {
@@ -48,16 +60,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Local Step Class Object
         /// </summary>
-        private StepClass StepClassObjectHere = new StepClass();
-            
-
-        /// <summary>
-        /// Delegate used to calculate calories
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public delegate double Calculate(double x, double y);
+        private StepClass StepClassObjectHere = new StepClass();            
 
         /// <summary>
         /// String that holds the Recipe Name
