@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace PROG6221_POE_Part_1.Classes
 {
-                                    //------- Part 2 Code -------
-
-    //-----------------------------------------------------------------------------------------------//
     internal class ConversionClass
     {
-       /* public string[] Unit = {"Ml(s)", "Teaspoon(s)", "Tablespoon(s)", "Cups(s)","Litre(s)", "Gram(s)", "Kilogram(s)", "Other"};
+        public string[] Unit = { "Ml(s)", "Teaspoon(s)", "Tablespoon(s)", "Cups(s)", "Litre(s)", "Gram(s)", "Kilogram(s)", "Other" };
 
         public string SelectedUnit { get; set; } = string.Empty;
 
@@ -20,7 +17,7 @@ namespace PROG6221_POE_Part_1.Classes
 
         public double TotalVolume { get; set; } = 0;
 
-        public double[] VolumePerUnit = {1, 5, 15, 237, 1000, 1, 1000, 1};
+        public double[] VolumePerUnit = { 1, 5, 15, 237, 1000, 1, 1000, 1 };
 
         public string MeasurementUnitHere { get; set; } = string.Empty;
 
@@ -30,175 +27,89 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ConversionClass() { }
-
-        public void CheckForUpdates(double quantity, double factor)
+        public ConversionClass()
         {
-            double totalVolume = 0;
-            totalVolume = quantity * factor;
 
-            if (!SelectedUnit.Equals(Unit[5]) && !SelectedUnit.Equals(Unit[6]) && !SelectedUnit.Equals(Unit[7]))
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        public (string, double) CheckForUpdates(string measurementUnitInput, double ingredientQuantityInput)
+        {            
+            if (measurementUnitInput.Equals("Millilitres") || measurementUnitInput.Equals("Millilitre")
+                || measurementUnitInput.Equals("Grams") || measurementUnitInput.Equals("Gram"))
             {
-                if (totalVolume > VolumePerUnit[1] && totalVolume < VolumePerUnit[2])
-                {
-                    SelectedUnit = Unit[1];
-                    SelectedVolume = VolumePerUnit[1];
-                }
-                else if (totalVolume > VolumePerUnit[2] && totalVolume < VolumePerUnit[3])
-                {
-                    SelectedUnit = Unit[2];
-                    SelectedVolume = VolumePerUnit[2];
-                }
-                else if (totalVolume > VolumePerUnit[3] && totalVolume < VolumePerUnit[4])
-                {
-                    SelectedUnit = Unit[3];
-                    SelectedVolume = VolumePerUnit[3];
-                }
-                else if (totalVolume > VolumePerUnit[4])
-                {
-                    SelectedUnit = Unit[4];
-                    SelectedVolume = VolumePerUnit[4];
-                }
-                else
-                {
-                    SelectedUnit = Unit[0];
-                    SelectedVolume = VolumePerUnit[0];
-                }
-            }
-            else 
-            { 
-                if (totalVolume < 1000)
-                {
-                    SelectedUnit = Unit[5];
-                    SelectedVolume = VolumePerUnit[5];
-                }
-                else
-                {
-                    SelectedUnit = Unit[6];
-                    SelectedVolume = VolumePerUnit[6];
-
-                }
+                ConvertQuantitiesUpwards(measurementUnitInput, ingredientQuantityInput);
             }
 
+            if (measurementUnitInput.Equals("Litres") || measurementUnitInput.Equals("Litre")
+                || measurementUnitInput.Equals("Grams") || measurementUnitInput.Equals("Gram"))
+            {
+                ConvertQuantitiesDownwards(measurementUnitInput, ingredientQuantityInput);
+            }
+            return (this.MeasurementUnitHere, this.IngredientQuantityHere);
+        }
+
+        //-----------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="measurementUnitInput"></param>
+        /// <param name="ingredientQuantityInput"></param>
+        public void ConvertQuantitiesUpwards(string measurementUnitInput, double ingredientQuantityInput)
+        {
+            double output = 0;            
+
+            if (measurementUnitInput.Equals("Millilitres") || measurementUnitInput.Equals("Millilitre"))
+            {
+                if (ingredientQuantityInput >= 1000)
+                {
+                    output = ingredientQuantityInput / 1000;
+                    this.MeasurementUnitHere = (output == 1) ? "Litre" : "Litres";
+                    this.IngredientQuantityHere = output;
+                }
+            }
+            else if (measurementUnitInput.Equals("Grams") || measurementUnitInput.Equals("Gram"))
+            {
+                if (ingredientQuantityInput >= 1000)
+                {
+                    output = ingredientQuantityInput / 1000;
+                    this.MeasurementUnitHere = (output == 1) ? "Kilogram" : "Kilograms";
+                    this.IngredientQuantityHere = output;
+                }
+            }
         }
 
 
         //-----------------------------------------------------------------------------------------------//
-        public void ConvertQuantitiesUpwards(string MeasurementUnitInput, double IngredientQuantityInput)
-        {
-            this.MeasurementUnitHere = MeasurementUnitInput;
-
-            if (MeasurementUnitInput.Equals("Millilitres"))
-            {
-                this.ConvertMillilitresToLitres(IngredientQuantityInput);        
-            }
-
-            else if (MeasurementUnitInput.Equals("Grams"))
-            {
-                this.ConvertGramsToKilograms(IngredientQuantityInput);                
-            }
-        }
-
-        public void ConvertQuantitiesDownwards(string MeasurementUnitInput, double IngredientQuantityInput)
-        {
-            this.MeasurementUnitHere = MeasurementUnitInput;
-
-            if (MeasurementUnitInput.Equals("Millilitres"))
-            {
-                this.ConvertLitresToMillilitres(IngredientQuantityInput);
-            }
-
-            else if (MeasurementUnitInput.Equals("Grams"))
-            {
-                this.ConvertKilogramsToGrams(IngredientQuantityInput);
-            }
-        }
-
-        //-----------------------------------------------------------------------------------------------//
-        public void ConvertMillilitresToLitres(double input)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="measurementUnitInput"></param>
+        /// <param name="ingredientQuantityInput"></param>
+        public void ConvertQuantitiesDownwards(string measurementUnitInput, double ingredientQuantityInput)
         {
             double output = 0;
+            this.MeasurementUnitHere = measurementUnitInput;
 
-            if (input >= 1000)
+            if (measurementUnitInput.Equals("Litres") || measurementUnitInput.Equals("Litre"))
             {
-                output = input / 1000;
-                if (output == 1)
+                if (ingredientQuantityInput < 1)
                 {
-                    this.MeasurementUnitHere = "Litre";
+                    output = ingredientQuantityInput * 1000;
+                    this.MeasurementUnitHere = (output == 1) ? "Millilitre" : "Millilitres";
                     this.IngredientQuantityHere = output;
                 }
-                else
+            }
+            else if (measurementUnitInput.Equals("Kilograms") || measurementUnitInput.Equals("Kilogram"))
+            {
+                if (ingredientQuantityInput < 1)
                 {
-                    this.MeasurementUnitHere = "Litres";
+                    output = ingredientQuantityInput * 1000;
+                    this.MeasurementUnitHere = (output == 1) ? "Gram" : "Grams";
                     this.IngredientQuantityHere = output;
                 }
             }
         }
-
-        //-----------------------------------------------------------------------------------------------//
-        public void ConvertGramsToKilograms(double input)
-        {
-            double output = 0;
-
-            if (input >= 1000)
-            {
-                output = input / 1000;
-                if (output == 1)
-                {
-                    this.MeasurementUnitHere = "Kilogram";
-                    this.IngredientQuantityHere = output;
-                }
-                else
-                {
-                    this.MeasurementUnitHere = "Kilograms";
-                    this.IngredientQuantityHere = output;
-                }
-            }
-        }
-
-        //-----------------------------------------------------------------------------------------------//
-        //-----------------------------------------------------------------------------------------------//
-        public void ConvertLitresToMillilitres(double input)
-        {
-            double output = 0;
-
-            if (input < 1)
-            {
-                output = input * 1000;
-                if (output == 1)
-                {
-                    this.MeasurementUnitHere = "Milliitre";
-                    this.IngredientQuantityHere = output;
-                }
-                else
-                {
-                    this.MeasurementUnitHere = "Millilitres";
-                    this.IngredientQuantityHere = output;
-                }
-            }
-        }
-
-
-        //-----------------------------------------------------------------------------------------------//
-        public void ConvertKilogramsToGrams(double input)
-        {
-            double output = 0;
-
-            if (input < 1)
-            {
-                output = input * 1000;
-                if (output == 1)
-                {
-                    this.MeasurementUnitHere = "Gram";
-                    this.IngredientQuantityHere = output;
-                }
-                else
-                {
-                    this.MeasurementUnitHere = "Grams";
-                    this.IngredientQuantityHere = output;
-                }
-            }
-        }*/
     }
-}
+}       
 //------------------------------------------oo00 End of File 00oo-------------------------------------------//

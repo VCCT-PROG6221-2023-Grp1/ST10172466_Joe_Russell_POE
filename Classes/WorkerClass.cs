@@ -23,17 +23,6 @@ namespace PROG6221_POE_Part_1.Classes
         /// </summary>
         public List<RecipeClass> RecipeList = new List<RecipeClass>();
 
-
-        /*------- Part 2 Code -------        
-        Issues:
-            - None Currently
-             
-
-        !!Use This Somewhere!
-        public (double, double, string) dasd
-        return (0, 1, "dsa")
-        */
-
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Default Constructor

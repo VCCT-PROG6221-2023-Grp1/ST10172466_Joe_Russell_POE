@@ -41,9 +41,15 @@ namespace PROG6221_POE_Part_1.Classes
         private IngredientClass IngredientClassObjectHere = new IngredientClass();
 
         /// <summary>
+        /// Local Conversion Class Object
+        /// </summary>
+        private ConversionClass ConversionClassObjectHere = new ConversionClass();
+
+        /// <summary>
         /// Local Step Class Object
         /// </summary>
         private StepClass StepClassObjectHere = new StepClass();
+            
 
         /// <summary>
         /// Delegate used to calculate calories
@@ -52,12 +58,6 @@ namespace PROG6221_POE_Part_1.Classes
         /// <param name="y"></param>
         /// <returns></returns>
         public delegate double Calculate(double x, double y);
-
-        //------- Part 2 Code -------
-        /// <summary>
-        /// Local Conversion Class Object
-        /// </summary>
-        //public ConversionClass ConversionClassObjectHere = new ConversionClass();        
 
         /// <summary>
         /// String that holds the Recipe Name
@@ -132,7 +132,7 @@ namespace PROG6221_POE_Part_1.Classes
                 ingredients.FoodGroup = this.IngredientClassObjectHere.FoodGroup;
 
                 //Delegate that calculates total calories
-                this.TotalCalories = addDelegate(this.TotalCalories, ingredients.CalorieAmount);
+                this.TotalCalories = addDelegate(this.TotalCalories, ingredients.CalorieAmount);                
 
                 //Assigning values to Ingredient List
                 this.IngredientList.Add(ingredients);
@@ -393,6 +393,14 @@ namespace PROG6221_POE_Part_1.Classes
             //Foreach loop to display ingredients
             foreach (IngredientClass ingredient in this.IngredientList)
             {
+                (string measurementUnitOutput, double ingredientQuantityOutput) = ConversionClassObjectHere.CheckForUpdates(ingredient.MeasurementUnit, ingredient.IngredientQuantity);
+
+                //if (string.IsNullOrEmpty(measurementUnitOutput))
+                //{
+                    ingredient.MeasurementUnit = measurementUnitOutput;
+                    ingredient.IngredientQuantity = ingredientQuantityOutput;
+                //}
+
                 ingredientDisplay += "- " + ingredient.IngredientQuantity.ToString() +
                     " " + ingredient.MeasurementUnit +
                     " of " + ingredient.IngredientName +
@@ -401,25 +409,13 @@ namespace PROG6221_POE_Part_1.Classes
                     "\r\n";
             }
             Console.WriteLine(ingredientDisplay);
-
+                        
             //Displays total calories of recipe
             Console.WriteLine("Total Calories: " + this.TotalCalories);
-
-            //Prints a warning if Total Calories exceeds 300
-            if (this.TotalCalories > 300)
-            {
-                this.ErrorPrint("\r\nWarning!!! Excessive Calories detected!\r\n" +
-                    "\r\nCalories are the unit used to determine the amount of energy in food or drinks.\r\n" +
-                    "Excessive calorie consumption can lead to increased weight gain, which comes with a lot of risks.\r\n" +
-                    "Extra calories places your heart at risk.\r\n" +
-                    "It can lead to atherosclerosis. " +
-                    "Which causes the stiffening of the artery wall, \r\nthis increases the risk of having a heart attack or stroke.\r\n" +
-                    "\r\nBeing overweight heightens the risk for fatty liver disease, certain cancers and high blood pressure.\r\n" +
-                    "It also increases the pressure on your joints, raising the risk of osteoarthritis.\r\n" +
-                    "The extra fat surrounding your neck can cause breathing problems and lead to sleep apnea, \r\n" +
-                    "a condition in which you stop breathing temporarily while asleep.");
-            }
-
+            
+            //Delegate to display calorie warning
+            this.TotalCalorieCalculation(this.TotalCalories);
+            
             //Set the console foreground color to green
             Console.ForegroundColor = ConsoleColor.Green;
 
@@ -461,47 +457,57 @@ namespace PROG6221_POE_Part_1.Classes
             return x + y;
         }
 
+        //-----------------------------------------------------------------------------------------------//
+        
+        public void TotalCalorieCalculation(double TotalCaloriesHere)
+        {
+            //Assigning the delegates
+            this.SerialDataSend = DisplayCalorieWarning;
 
+            //We are only calling this method            
+            this.DataIn(TotalCaloriesHere);
+        }
 
+        //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// This method is where the information comes from
         /// </summary>
         public void DataIn(double myData)
-        //public void SendData( totalCalories)
         {
             //This would be calories calculates
             if (myData > 300)
             {
                 this.OnDataSend(myData);
             }
-
         }
 
-
-
-        public void Test()
-        {
-            //Assigning the delegates
-            this.SerialDataSend += DisplayCalorieWarning;
-
-            //We are only Calling this method
-            double MyDouble = 299;
-            this.DataIn(MyDouble);
-        }
-
-
+        //-----------------------------------------------------------------------------------------------//
         /// <summary>
-        /// THis is where the data arrives
+        /// This is where the data arrives
         /// </summary>
         /// <param name="dataOut"></param>
         private static void DisplayCalorieWarning(double dataOut)
         {
             string printData = dataOut.ToString();
-            Console.WriteLine(printData);
 
+            // Set the console foreground color to red
+            Console.ForegroundColor = ConsoleColor.Red;
+            
+            Console.WriteLine("\r\nWarning!!! Excessive Calories detected!\r\n" +
+                    "\r\nCalories are the unit used to determine the amount of energy in food or drinks.\r\n" +
+                    "Excessive calorie consumption can lead to increased weight gain, which comes with a lot of risks.\r\n" +
+                    "Extra calories places your heart at risk.\r\n" +
+                    "It can lead to atherosclerosis. " +
+                    "Which causes the stiffening of the artery wall, \r\nthis increases the risk of having a heart attack or stroke.\r\n" +
+                    "\r\nBeing overweight heightens the risk for fatty liver disease, certain cancers and high blood pressure.\r\n" +
+                    "It also increases the pressure on your joints, raising the risk of osteoarthritis.\r\n" +
+                    "The extra fat surrounding your neck can cause breathing problems and lead to sleep apnea, \r\n" +
+                    "a condition in which you stop breathing temporarily while asleep.");
+
+            // Reset the console foreground color
+            Console.ResetColor();
             Console.ReadLine();
         }
-
 
         //-----------------------------------------------------------------------------------------------//
 
