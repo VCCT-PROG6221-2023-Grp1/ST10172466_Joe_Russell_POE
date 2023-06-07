@@ -8,21 +8,7 @@ using System.Threading.Tasks;
 namespace PROG6221_POE_Part_1.Classes
 {
     internal class ConversionClass
-    {
-        public string[] Unit = { "Ml(s)", "Teaspoon(s)", "Tablespoon(s)", "Cups(s)", "Litre(s)", "Gram(s)", "Kilogram(s)", "Other" };
-
-        public string SelectedUnit { get; set; } = string.Empty;
-
-        public double SelectedVolume { get; set; } = 0;
-
-        public double TotalVolume { get; set; } = 0;
-
-        public double[] VolumePerUnit = { 1, 5, 15, 237, 1000, 1, 1000, 1 };
-
-        public string MeasurementUnitHere { get; set; } = string.Empty;
-
-        public double IngredientQuantityHere { get; set; } = 0;
-
+    {       
         //-----------------------------------------------------------------------------------------------//
         /// <summary>
         /// Default Constructor

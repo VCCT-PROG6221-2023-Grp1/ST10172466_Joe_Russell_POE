@@ -10,14 +10,29 @@ namespace PROG6221_POE_Part_1.Classes
 {
     internal class IngredientClass
     {
+        /// <summary>
+        /// String that holds the Ingredient Name
+        /// </summary>
         public string IngredientName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Double that holds the Ingredient Quantity
+        /// </summary>
         public double IngredientQuantity { get; set; } = 0;
 
+        /// <summary>
+        /// String that holds the Measurement Unit
+        /// </summary>
         public string MeasurementUnit { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Double that holds the Calorie Amount
+        /// </summary>
         public double CalorieAmount { get; set; } = 0;
 
+        /// <summary>
+        /// String that holds the Food Group
+        /// </summary>
         public string FoodGroup { get; set; } = string.Empty;
 
         //-----------------------------------------------------------------------------------------------//

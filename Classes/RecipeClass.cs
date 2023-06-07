@@ -454,7 +454,6 @@ namespace PROG6221_POE_Part_1.Classes
 
             // Reset the console foreground color
             Console.ResetColor();
-            Console.ReadLine();
         }
 
         //-----------------------------------------------------------------------------------------------//
