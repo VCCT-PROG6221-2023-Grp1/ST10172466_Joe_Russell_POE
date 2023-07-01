@@ -11,7 +11,7 @@ using static PROG6221_POE_Part_1.Classes.RecipeClass;
 
 namespace PROG6221_POE_Part_1.Classes
 {
-    internal class WorkerClass
+    public class WorkerClass
     {
         /// <summary>
         /// Local Recipe Class Object
@@ -106,7 +106,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Method to add a new recipe
         /// </summary>
-        private void AddRecipe()
+        public void AddRecipe()
         {
             //Creating recipe class instance
             RecipeClass recipe = new RecipeClass();
@@ -188,7 +188,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Method that displays all recipe names and allows users to select one
         /// </summary>
-        private void SearchRecipe()
+        public void SearchRecipe()
         {
             //Try-catch to handle errors
             try
