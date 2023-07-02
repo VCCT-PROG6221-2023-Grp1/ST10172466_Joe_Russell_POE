@@ -50,7 +50,7 @@ namespace PROG6221_POE_Part_1.Classes
         /// <summary>
         /// Menu that displays program functions
         /// </summary>
-        public void MainMenu()
+        /*public void MainMenu()
         {
             //Format Menu
             RecipeClassObjectHere.Format();
@@ -96,7 +96,7 @@ namespace PROG6221_POE_Part_1.Classes
 
             Console.Clear();
             this.MainMenu();
-        }
+        }*/
 
         //-----------------------------------------------------------------------------------------------//
 
