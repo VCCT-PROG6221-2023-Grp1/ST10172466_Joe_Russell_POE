@@ -80,6 +80,7 @@ namespace PROG6221_POE_Part_1.Classes
             {
                 case 1:
                     this.MeasurementUnit = "Millilitres";
+
                     break;
                 case 2:
                     this.MeasurementUnit = "Grams";
