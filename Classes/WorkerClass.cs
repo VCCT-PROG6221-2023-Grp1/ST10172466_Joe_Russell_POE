@@ -32,7 +32,6 @@ namespace PROG6221_POE_Part_1.Classes
 
         }
 
-
         //-----------------------------------------------------------------------------------------------//        
         /// <summary>
         /// Method to run the Recipe Class
