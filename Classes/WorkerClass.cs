@@ -39,7 +39,7 @@ namespace PROG6221_POE_Part_1.Classes
         public void RunWorker()
         {
             //Calling method to display main menu of the application
-            this.MainMenu();
+            //this.MainMenu();
         }
 
         //-----------------------------------------------------------------------------------------------//
